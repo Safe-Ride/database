@@ -1,3 +1,7 @@
+CREATE USER IF NOT EXISTS 'safeuser'@'localhost' IDENTIFIED BY 'eunaosei';
+GRANT ALL PRIVILEGES ON saferide.* TO 'safeuser'@'localhost';
+FLUSH PRIVILEGES;
+
 create database saferide;
 use saferide;
 -- -----------------------------------------------------
