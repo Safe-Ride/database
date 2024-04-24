@@ -11,9 +11,8 @@ CREATE TABLE IF NOT EXISTS `Transacao` (
   `contaDeposito` VARCHAR(20) NULL,
   `fkDebito` INT NOT NULL,
   `fkDeposito` INT NOT NULL,
-  PRIMARY KEY (`id`))
-
-
+  PRIMARY KEY (`id`)
+);
 
 -- -----------------------------------------------------
 -- Table `Endereco`
@@ -25,9 +24,8 @@ CREATE TABLE IF NOT EXISTS `Endereco` (
   `cep` CHAR(8) NULL,
   `numero` DECIMAL(4) NULL,
   `complemento` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`))
-
-
+  PRIMARY KEY (`id`)
+);
 
 -- -----------------------------------------------------
 -- Table `Cliente`
@@ -48,9 +46,8 @@ CREATE TABLE IF NOT EXISTS `Cliente` (
     FOREIGN KEY (`endereco_id`)
     REFERENCES `Endereco` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-
-
+    ON UPDATE NO ACTION
+);
 
 -- -----------------------------------------------------
 -- Table `Dependente`
@@ -68,9 +65,8 @@ CREATE TABLE IF NOT EXISTS `Dependente` (
     FOREIGN KEY (`responsavel_id`)
     REFERENCES `Cliente` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-
-
+    ON UPDATE NO ACTION
+);
 
 -- -----------------------------------------------------
 -- Table `Transporte`
@@ -89,9 +85,8 @@ CREATE TABLE IF NOT EXISTS `Transporte` (
     FOREIGN KEY (`motorista_id`)
     REFERENCES `Cliente` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-
-
+    ON UPDATE NO ACTION
+);
 
 -- -----------------------------------------------------
 -- Table `Trajeto`
@@ -100,9 +95,8 @@ CREATE TABLE IF NOT EXISTS `Trajeto` (
   `id` INT NOT NULL,
   `escola` VARCHAR(45) NULL,
   `tipo` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`))
-
-
+  PRIMARY KEY (`id`)
+);
 
 -- -----------------------------------------------------
 -- Table `Chat`
@@ -123,9 +117,8 @@ CREATE TABLE IF NOT EXISTS `Chat` (
     FOREIGN KEY (`motorista_id`)
     REFERENCES `Cliente` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-
-
+    ON UPDATE NO ACTION
+);
 
 -- -----------------------------------------------------
 -- Table `Mensagem`
@@ -148,9 +141,8 @@ CREATE TABLE IF NOT EXISTS `Mensagem` (
     FOREIGN KEY (`cliente_id`)
     REFERENCES `Cliente` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-
-
+    ON UPDATE NO ACTION
+);
 
 -- -----------------------------------------------------
 -- Table `TrajetoDependente`
@@ -177,4 +169,5 @@ CREATE TABLE IF NOT EXISTS `TrajetoDependente` (
     FOREIGN KEY (`endereco_id`)
     REFERENCES `Endereco` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION
+);
