@@ -199,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `senha` CHAR(16) NULL DEFAULT NULL,
   `CPF` CHAR(11) NULL DEFAULT NULL,
   `telefone` CHAR(11) NULL DEFAULT NULL,
-  `dataNascimento` DATE NULL DEFAULT NULL,
+  `data_nascimento` DATE NULL DEFAULT NULL,
   `tipo` INT NULL DEFAULT NULL,
   `endereco_id` INT NOT NULL,
   PRIMARY KEY (`id`),
