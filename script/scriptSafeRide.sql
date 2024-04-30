@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `Usuario` (
   `senha` CHAR(16) NULL,
   `CPF` CHAR(11) NULL,
   `telefone` CHAR(11) NULL,
-  `dataNascimento` DATE NULL,
+  `data_nascimento` DATE NULL,
   `tipo` INT NULL,
   PRIMARY KEY (`id`));
 
@@ -294,21 +294,6 @@ CREATE TABLE IF NOT EXISTS `trajetodependente` (
     FOREIGN KEY (`endereco_id`)
     REFERENCES `endereco` (`id`));
 
-
--- -----------------------------------------------------
--- Table `transacao`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `transacao` (
-  `id` INT NOT NULL,
-  `valor` DECIMAL(5,2) NULL DEFAULT NULL,
-  `dia` DATETIME NULL DEFAULT NULL,
-  `contaDebito` VARCHAR(20) NULL DEFAULT NULL,
-  `contaDeposito` VARCHAR(20) NULL DEFAULT NULL,
-  `fkDebito` INT NOT NULL,
-  `fkDeposito` INT NOT NULL,
-  PRIMARY KEY (`id`));
-
-
 -- -----------------------------------------------------
 -- Table `transporte`
 -- -----------------------------------------------------
@@ -325,3 +310,16 @@ CREATE TABLE IF NOT EXISTS `transporte` (
   CONSTRAINT `fk_Transporte_Cliente`
     FOREIGN KEY (`motorista_id`)
     REFERENCES `cliente` (`id`));
+    
+-- -----------------------------------------------------
+-- Table `escola`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `escola` (
+  `id` INT NOT NULL,
+  `nome` VARCHAR(45) NULL DEFAULT NULL,
+  `endereco_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_escola_endereco_idx` (`endereco_id` ASC) VISIBLE,
+  CONSTRAINT `fk_escola_endereco`
+    FOREIGN KEY (`endereco_id`)
+    REFERENCES `endereco` (`id`));
