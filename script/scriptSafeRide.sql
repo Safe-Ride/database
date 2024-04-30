@@ -14,46 +14,11 @@ CREATE TABLE `usuario` (
 	`nome` VARCHAR(45) NULL,
 	`email` VARCHAR(45) NULL,
 	`senha` CHAR(64) NULL,
-	`cpf` CHAR(11) NULL,
+	`cpf` CHAR(15) NULL,
 	`telefone` CHAR(11) NULL,
 	`data_nascimento` DATE NULL,
 	`tipo` INT NULL,
 	PRIMARY KEY (`id`)
-);
-
--- -----------------------------------------------------
--- Table `dependente`
--- -----------------------------------------------------
-CREATE TABLE `dependente` (
-	`id` INT NOT NULL AUTO_INCREMENT,
-	`nome` VARCHAR(45) NULL,
-	`data_nascimento` DATE NULL,
-	`escola` VARCHAR(45) NULL,
-	`serie` VARCHAR(45) NULL,
-	`usuario_id` INT NOT NULL,
-	PRIMARY KEY (`id`),
-	INDEX `fk_dependente_usuario_idx` (`usuario_id` ASC) VISIBLE,
-	CONSTRAINT `fk_dependente_usuario`
-		FOREIGN KEY (`usuario_id`)
-		REFERENCES `usuario` (`id`)
-);
-    
--- -----------------------------------------------------
--- Table `transporte`
--- -----------------------------------------------------
-CREATE TABLE `transporte` (
-	`id` INT NOT NULL AUTO_INCREMENT,
-	`placa` VARCHAR(45) NULL DEFAULT NULL,
-	`cnpj` CHAR(14) NULL DEFAULT NULL,
-	`cnh` CHAR(9) NULL DEFAULT NULL,
-	`crm` VARCHAR(15) NULL DEFAULT NULL,
-	`crmc` VARCHAR(20) NULL DEFAULT NULL,
-	`motorista_id` INT NOT NULL,
-	PRIMARY KEY (`id`),
-	INDEX `fk_transporte_usuario_idx` (`motorista_id` ASC) VISIBLE,
-	CONSTRAINT `fk_transporte_usuario`
-		FOREIGN KEY (`motorista_id`)
-		REFERENCES `usuario` (`id`)
 );
 
 -- -----------------------------------------------------
@@ -78,14 +43,54 @@ CREATE TABLE `endereco` (
 -- Table `escola`
 -- -----------------------------------------------------
 CREATE TABLE `escola` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `nome` VARCHAR(45) NULL DEFAULT NULL,
-  `endereco_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_escola_endereco_idx` (`endereco_id` ASC) VISIBLE,
-  CONSTRAINT `fk_escola_endereco`
-    FOREIGN KEY (`endereco_id`)
-    REFERENCES `endereco` (`id`));
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`nome` VARCHAR(45) NULL DEFAULT NULL,
+	`endereco_id` INT NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `fk_escola_endereco_idx` (`endereco_id` ASC) VISIBLE,
+	CONSTRAINT `fk_escola_endereco`
+		FOREIGN KEY (`endereco_id`)
+		REFERENCES `endereco` (`id`)
+);
+
+-- -----------------------------------------------------
+-- Table `dependente`
+-- -----------------------------------------------------
+CREATE TABLE `dependente` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`nome` VARCHAR(45) NULL,
+	`data_nascimento` DATE NULL,
+	`serie` VARCHAR(45) NULL,
+	`escola_id` INT NOT NULL,
+	`usuario_id` INT NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `fk_dependente_usuario_idx` (`usuario_id` ASC) VISIBLE,
+	CONSTRAINT `fk_dependente_usuario`
+		FOREIGN KEY (`usuario_id`)
+		REFERENCES `usuario` (`id`),
+	INDEX `fk_dependente_escola_idx` (`escola_id` ASC) VISIBLE,
+	CONSTRAINT `fk_dependente_escola`
+		FOREIGN KEY (`escola_id`)
+		REFERENCES `escola` (`id`)
+);
+    
+-- -----------------------------------------------------
+-- Table `transporte`
+-- -----------------------------------------------------
+CREATE TABLE `transporte` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`placa` VARCHAR(45) NULL DEFAULT NULL,
+	`cnpj` CHAR(14) NULL DEFAULT NULL,
+	`cnh` CHAR(9) NULL DEFAULT NULL,
+	`crm` VARCHAR(15) NULL DEFAULT NULL,
+	`crmc` VARCHAR(20) NULL DEFAULT NULL,
+	`motorista_id` INT NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `fk_transporte_usuario_idx` (`motorista_id` ASC) VISIBLE,
+	CONSTRAINT `fk_transporte_usuario`
+		FOREIGN KEY (`motorista_id`)
+		REFERENCES `usuario` (`id`)
+);
 
 -- -----------------------------------------------------
 -- Table `trajeto`
@@ -106,10 +111,11 @@ CREATE TABLE IF NOT EXISTS `trajeto` (
 -- Table `rota`
 -- -----------------------------------------------------
 CREATE TABLE `rota` (
+	`rota_id` INT AUTO_INCREMENT,
   `trajeto_id` INT NOT NULL,
   `dependente_id` INT NOT NULL,
   `endereco_id` INT NOT NULL,
-  PRIMARY KEY (`trajeto_id`, `dependente_id`, `endereco_id`),
+  PRIMARY KEY (`rota_id`, `trajeto_id`, `dependente_id`, `endereco_id`),
   INDEX `fk_rota_trajeto_idx` (`dependente_id` ASC) VISIBLE,
   INDEX `fk_rota_dependente_idx` (`trajeto_id` ASC) VISIBLE,
   INDEX `fk_rota_endereco_idx` (`endereco_id` ASC) VISIBLE,
