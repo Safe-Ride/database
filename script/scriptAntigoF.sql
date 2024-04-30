@@ -2,11 +2,11 @@
 -- GRANT ALL PRIVILEGES ON saferide.* TO 'safeuser'@'localhost';
 -- FLUSH PRIVILEGES;
 -- select * from mysql.user;
- drop database saferide;
- select  * from usuario;
+ drop database if exists saferide;
+-- select  * from usuario;
 CREATE DATABASE IF NOT EXISTS saferide;
 use saferide;
-delete from usuario where id< 7;
+-- delete from usuario where id< 7;
 -- -----------------------------------------------------
 -- Table `Transacao`
 -- -----------------------------------------------------

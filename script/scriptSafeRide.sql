@@ -10,11 +10,7 @@ use saferide;
 -- Table `usuario`
 -- -----------------------------------------------------
 CREATE TABLE `usuario` (
-<<<<<<< HEAD
 	`id` INT AUTO_INCREMENT,
-=======
-	`id` INT auto_increment,
->>>>>>> 60484092ea7e3d19c18c7e000dfcad6a3a093dac
 	`nome` VARCHAR(45) NULL,
 	`email` VARCHAR(45) NULL,
 	`senha` CHAR(64) NULL,
@@ -34,14 +30,12 @@ CREATE TABLE `dependente` (
 	`data_nascimento` DATE NULL,
 	`escola` VARCHAR(45) NULL,
 	`serie` VARCHAR(45) NULL,
-	`responsavel_id` INT NOT NULL,
+	`usuario_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `fk_dependente_usuario_idx` (`responsavel_id` ASC) VISIBLE,
+	INDEX `fk_dependente_usuario_idx` (`usuario_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_usuario`
-		FOREIGN KEY (`responsavel_id`)
-		REFERENCES `Usuario` (`id`)
-		ON DELETE NO ACTION
-		ON UPDATE NO ACTION
+		FOREIGN KEY (`usuario_id`)
+		REFERENCES `usuario` (`id`)
 );
     
 -- -----------------------------------------------------
