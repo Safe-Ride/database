@@ -2,18 +2,19 @@ CREATE USER IF NOT EXISTS 'safeuser'@'localhost' IDENTIFIED BY 'eunaosei';
 GRANT ALL PRIVILEGES ON saferide.* TO 'safeuser'@'localhost';
 FLUSH PRIVILEGES;
 
-CREATE DATABASE IF NOT EXISTS saferide;
+DROP DATABASE IF EXISTS saferide;
+CREATE DATABASE saferide;
 use saferide;
 
 -- -----------------------------------------------------
 -- Table `usuario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `usuario` (
+CREATE TABLE `usuario` (
 	`id` INT NOT NULL,
 	`nome` VARCHAR(45) NULL,
 	`email` VARCHAR(45) NULL,
-	`senha` CHAR(16) NULL,
-	`CPF` CHAR(11) NULL,
+	`senha` VARCHAR(16) NULL,
+	`cpf` CHAR(15) NULL,
 	`telefone` CHAR(11) NULL,
 	`data_nascimento` DATE NULL,
 	`tipo` INT NULL,
@@ -23,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 -- -----------------------------------------------------
 -- Table `dependente`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dependente` (
+CREATE TABLE `dependente` (
 	`id` INT NOT NULL,
 	`nome` VARCHAR(45) NULL,
 	`data_nascimento` DATE NULL,
@@ -42,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `dependente` (
 -- -----------------------------------------------------
 -- Table `transporte`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `transporte` (
+CREATE TABLE `transporte` (
 	`id` INT NOT NULL,
 	`placa` VARCHAR(45) NULL DEFAULT NULL,
 	`cnpj` CHAR(14) NULL DEFAULT NULL,
@@ -60,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `transporte` (
 -- -----------------------------------------------------
 -- Table `endereco`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `endereco` (
+CREATE TABLE `endereco` (
 	`id` INT NOT NULL,
 	`latitude` VARCHAR(45) NULL DEFAULT NULL,
 	`longitude` VARCHAR(45) NULL DEFAULT NULL,
@@ -78,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `endereco` (
 -- -----------------------------------------------------
 -- Table `escola`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `escola` (
+CREATE TABLE `escola` (
   `id` INT NOT NULL,
   `nome` VARCHAR(45) NULL DEFAULT NULL,
   `endereco_id` INT NOT NULL,
@@ -95,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `trajeto` (
 	`id` INT NOT NULL,
 	`tipo` VARCHAR(45) NULL DEFAULT NULL,
 	`dia_semana` VARCHAR(45) NULL DEFAULT NULL,
-	`escola_id` VARCHAR(45) NULL DEFAULT NULL,
+	`escola_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `fk_trajeto_escola_idx` (`escola_id` ASC) VISIBLE,
 	CONSTRAINT `fk_trajeto_escola`
@@ -106,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `trajeto` (
 -- -----------------------------------------------------
 -- Table `rota`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `rota` (
+CREATE TABLE `rota` (
   `trajeto_id` INT NOT NULL,
   `dependente_id` INT NOT NULL,
   `endereco_id` INT NOT NULL,
@@ -128,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `rota` (
 -- -----------------------------------------------------
 -- Table `chat`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `chat` (
+CREATE TABLE `chat` (
 	`id` INT NOT NULL,
 	`responsavel_id` INT NOT NULL,
 	`motorista_id` INT NOT NULL,
@@ -146,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `chat` (
 -- -----------------------------------------------------
 -- Table `mensagem`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mensagem` (
+CREATE TABLE `mensagem` (
 	`id` INT NOT NULL,
 	`data` DATETIME NULL,
 	`conteudo` VARCHAR(45) NULL,
