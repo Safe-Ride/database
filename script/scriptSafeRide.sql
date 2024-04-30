@@ -10,11 +10,11 @@ use saferide;
 -- Table `usuario`
 -- -----------------------------------------------------
 CREATE TABLE `usuario` (
-	`id` INT NOT NULL,
+	`id` INT auto_increment,
 	`nome` VARCHAR(45) NULL,
 	`email` VARCHAR(45) NULL,
-	`senha` VARCHAR(16) NULL,
-	`cpf` CHAR(15) NULL,
+	`senha` CHAR(64) NULL,
+	`cpf` CHAR(11) NULL,
 	`telefone` CHAR(11) NULL,
 	`data_nascimento` DATE NULL,
 	`tipo` INT NULL,
