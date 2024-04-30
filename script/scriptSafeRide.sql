@@ -10,7 +10,11 @@ use saferide;
 -- Table `usuario`
 -- -----------------------------------------------------
 CREATE TABLE `usuario` (
+<<<<<<< HEAD
 	`id` INT AUTO_INCREMENT,
+=======
+	`id` INT auto_increment,
+>>>>>>> 60484092ea7e3d19c18c7e000dfcad6a3a093dac
 	`nome` VARCHAR(45) NULL,
 	`email` VARCHAR(45) NULL,
 	`senha` CHAR(64) NULL,
