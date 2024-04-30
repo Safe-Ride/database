@@ -10,11 +10,11 @@ use saferide;
 -- Table `usuario`
 -- -----------------------------------------------------
 CREATE TABLE `usuario` (
-	`id` INT NOT NULL,
+	`id` INT AUTO_INCREMENT,
 	`nome` VARCHAR(45) NULL,
 	`email` VARCHAR(45) NULL,
-	`senha` VARCHAR(16) NULL,
-	`cpf` CHAR(15) NULL,
+	`senha` CHAR(64) NULL,
+	`cpf` CHAR(11) NULL,
 	`telefone` CHAR(11) NULL,
 	`data_nascimento` DATE NULL,
 	`tipo` INT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE `usuario` (
 -- Table `dependente`
 -- -----------------------------------------------------
 CREATE TABLE `dependente` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`nome` VARCHAR(45) NULL,
 	`data_nascimento` DATE NULL,
 	`escola` VARCHAR(45) NULL,
@@ -44,7 +44,7 @@ CREATE TABLE `dependente` (
 -- Table `transporte`
 -- -----------------------------------------------------
 CREATE TABLE `transporte` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`placa` VARCHAR(45) NULL DEFAULT NULL,
 	`cnpj` CHAR(14) NULL DEFAULT NULL,
 	`cnh` CHAR(9) NULL DEFAULT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE `transporte` (
 -- Table `endereco`
 -- -----------------------------------------------------
 CREATE TABLE `endereco` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`latitude` VARCHAR(45) NULL DEFAULT NULL,
 	`longitude` VARCHAR(45) NULL DEFAULT NULL,
 	`cep` CHAR(8) NULL DEFAULT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE `endereco` (
 -- Table `escola`
 -- -----------------------------------------------------
 CREATE TABLE `escola` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NULL DEFAULT NULL,
   `endereco_id` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -93,7 +93,7 @@ CREATE TABLE `escola` (
 -- Table `trajeto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `trajeto` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`tipo` VARCHAR(45) NULL DEFAULT NULL,
 	`dia_semana` VARCHAR(45) NULL DEFAULT NULL,
 	`escola_id` INT NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE `rota` (
 -- Table `chat`
 -- -----------------------------------------------------
 CREATE TABLE `chat` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`responsavel_id` INT NOT NULL,
 	`motorista_id` INT NOT NULL,
 	PRIMARY KEY (`id`, `motorista_id`, `responsavel_id`),
@@ -148,7 +148,7 @@ CREATE TABLE `chat` (
 -- Table `mensagem`
 -- -----------------------------------------------------
 CREATE TABLE `mensagem` (
-	`id` INT NOT NULL,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`data` DATETIME NULL,
 	`conteudo` VARCHAR(45) NULL,
 	`chat_id` INT NOT NULL,
