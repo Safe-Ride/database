@@ -52,7 +52,7 @@ CREATE TABLE `escola` (
 		FOREIGN KEY (`endereco_id`)
 		REFERENCES `endereco` (`id`)
 );
-
+	
 -- -----------------------------------------------------
 -- Table `dependente`
 -- -----------------------------------------------------
@@ -84,11 +84,11 @@ CREATE TABLE `transporte` (
 	`cnh` CHAR(9) NULL DEFAULT NULL,
 	`crm` VARCHAR(15) NULL DEFAULT NULL,
 	`crmc` VARCHAR(20) NULL DEFAULT NULL,
-	`motorista_id` INT NOT NULL,
+	`usuario_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `fk_transporte_usuario_idx` (`motorista_id` ASC) VISIBLE,
+	INDEX `fk_transporte_usuario_idx` (`usuario_id` ASC) VISIBLE,
 	CONSTRAINT `fk_transporte_usuario`
-		FOREIGN KEY (`motorista_id`)
+		FOREIGN KEY (`usuario_id`)
 		REFERENCES `usuario` (`id`)
 );
 
@@ -166,4 +166,21 @@ CREATE TABLE `mensagem` (
 	CONSTRAINT `fk_mensagem_usuario`
 		FOREIGN KEY (`usuario_id`)
 		REFERENCES `usuario` (`id`)
+);
+
+-- -----------------------------------------------------
+-- Table `transporte_escola`
+-- -----------------------------------------------------
+CREATE TABLE `transporte_escola` (
+  `transporte_id` INT NOT NULL,
+  `escola_id` INT NOT NULL,
+  PRIMARY KEY (`transporte_id`, `escola_id`),
+  INDEX `fk_transporte_escola_transporte_idx` (`transporte_id` ASC) VISIBLE,
+  INDEX `fk_transporte_escola_escola_idx` (`escola_id` ASC) VISIBLE,
+  CONSTRAINT `fk_transporte_escola_transporte`
+    FOREIGN KEY (`transporte_id`)
+    REFERENCES `transporte` (`id`),
+  CONSTRAINT `fk_transporte_escola_escola`
+    FOREIGN KEY (`escola_id`)
+    REFERENCES `escola` (`id`)
 );
