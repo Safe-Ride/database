@@ -97,8 +97,8 @@ CREATE TABLE `transporte` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `trajeto` (
 	`id` INT NOT NULL AUTO_INCREMENT,
-	`tipo` VARCHAR(45) NULL DEFAULT NULL,
-	`dia_semana` VARCHAR(45) NULL DEFAULT NULL,
+	`tipo` INT NOT NULL,
+	`dia_semana` INT NOT NULL,
 	`escola_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `fk_trajeto_escola_idx` (`escola_id` ASC) VISIBLE,
@@ -112,23 +112,23 @@ CREATE TABLE IF NOT EXISTS `trajeto` (
 -- -----------------------------------------------------
 CREATE TABLE `rota` (
 	`rota_id` INT AUTO_INCREMENT,
-  `trajeto_id` INT NOT NULL,
-  `dependente_id` INT NOT NULL,
-  `endereco_id` INT NOT NULL,
-  PRIMARY KEY (`rota_id`, `trajeto_id`, `dependente_id`, `endereco_id`),
-  INDEX `fk_rota_trajeto_idx` (`dependente_id` ASC) VISIBLE,
-  INDEX `fk_rota_dependente_idx` (`trajeto_id` ASC) VISIBLE,
-  INDEX `fk_rota_endereco_idx` (`endereco_id` ASC) VISIBLE,
-  CONSTRAINT `fk_rota_dependente`
-    FOREIGN KEY (`dependente_id`)
-    REFERENCES `dependente` (`id`),
-  CONSTRAINT `fk_rota_trajeto`
-    FOREIGN KEY (`trajeto_id`)
-    REFERENCES `trajeto` (`id`),
-  CONSTRAINT `fk_rota_endereco`
-    FOREIGN KEY (`endereco_id`)
-    REFERENCES `endereco` (`id`));
-
+	`trajeto_id` INT NOT NULL,
+	`dependente_id` INT NOT NULL,
+	`endereco_id` INT NOT NULL,
+	PRIMARY KEY (`rota_id`, `trajeto_id`, `dependente_id`, `endereco_id`),
+	INDEX `fk_rota_trajeto_idx` (`dependente_id` ASC) VISIBLE,
+	INDEX `fk_rota_dependente_idx` (`trajeto_id` ASC) VISIBLE,
+	INDEX `fk_rota_endereco_idx` (`endereco_id` ASC) VISIBLE,
+    CONSTRAINT `fk_rota_trajeto`
+		FOREIGN KEY (`trajeto_id`)
+		REFERENCES `trajeto` (`id`),
+	CONSTRAINT `fk_rota_dependente`
+		FOREIGN KEY (`dependente_id`)
+		REFERENCES `dependente` (`id`),
+	CONSTRAINT `fk_rota_endereco`
+		FOREIGN KEY (`endereco_id`)
+		REFERENCES `endereco` (`id`)
+);
     
 -- -----------------------------------------------------
 -- Table `chat`
