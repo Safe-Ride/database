@@ -63,6 +63,7 @@ CREATE TABLE `dependente` (
 	`serie` VARCHAR(45) NULL,
 	`escola_id` INT NOT NULL,
 	`usuario_id` INT NOT NULL,
+	`motorista_id` INT DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `fk_dependente_usuario_idx` (`usuario_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_usuario`
@@ -71,7 +72,11 @@ CREATE TABLE `dependente` (
 	INDEX `fk_dependente_escola_idx` (`escola_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_escola`
 		FOREIGN KEY (`escola_id`)
-		REFERENCES `escola` (`id`)
+		REFERENCES `escola` (`id`),
+	INDEX `fk_dependente_motorista_idx` (`motorista_id` ASC) VISIBLE,
+	CONSTRAINT `fk_dependente_motorista`
+		FOREIGN KEY (`motorista_id`)
+		REFERENCES `usuario` (`id`)
 );
     
 -- -----------------------------------------------------
@@ -100,11 +105,16 @@ CREATE TABLE IF NOT EXISTS `trajeto` (
 	`tipo` INT NOT NULL,
 	`dia_semana` INT NOT NULL,
 	`escola_id` INT NOT NULL,
+	`motorista_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `fk_trajeto_escola_idx` (`escola_id` ASC) VISIBLE,
 	CONSTRAINT `fk_trajeto_escola`
 		FOREIGN KEY (`escola_id`)
-		REFERENCES `escola` (`id`)
+		REFERENCES `escola` (`id`),
+	INDEX `fk_trajeto_motorista_idx` (`motorista_id` ASC) VISIBLE,
+	CONSTRAINT `fk_trajeto_motorista`
+		FOREIGN KEY (`motorista_id`)
+		REFERENCES `usuario` (`id`)
 );
 
 -- -----------------------------------------------------
