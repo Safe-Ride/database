@@ -62,12 +62,12 @@ CREATE TABLE `dependente` (
 	`data_nascimento` DATE NULL,
 	`serie` VARCHAR(45) NULL,
 	`escola_id` INT NOT NULL,
-	`usuario_id` INT NOT NULL,
+	`responsavel_id` INT NOT NULL,
 	`motorista_id` INT DEFAULT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `fk_dependente_usuario_idx` (`usuario_id` ASC) VISIBLE,
-	CONSTRAINT `fk_dependente_usuario`
-		FOREIGN KEY (`usuario_id`)
+	INDEX `fk_dependente_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
+	CONSTRAINT `fk_dependente_responsavel`
+		FOREIGN KEY (`responsavel_id`)
 		REFERENCES `usuario` (`id`),
 	INDEX `fk_dependente_escola_idx` (`escola_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_escola`
@@ -164,18 +164,23 @@ CREATE TABLE `chat` (
 CREATE TABLE `mensagem` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`data` DATETIME NULL,
-	`conteudo` VARCHAR(45) NULL,
+	`status` INT NOT NULL,
 	`chat_id` INT NOT NULL,
 	`usuario_id` INT NOT NULL,
+	`dependente_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `fk_mensagem_chat_idx` (`chat_id` ASC) VISIBLE,
-	INDEX `fk_mensagem_usuario_idc` (`usuario_id` ASC) VISIBLE,
+	INDEX `fk_mensagem_usuario_idx` (`usuario_id` ASC) VISIBLE,
+	INDEX `fk_mensagem_dependente_idx` (`dependente_id` ASC) VISIBLE,
 	CONSTRAINT `fk_mensagem_chat`
 		FOREIGN KEY (`chat_id`)
 		REFERENCES `chat` (`id`),
 	CONSTRAINT `fk_mensagem_usuario`
 		FOREIGN KEY (`usuario_id`)
-		REFERENCES `usuario` (`id`)
+		REFERENCES `usuario` (`id`),
+	CONSTRAINT `fk_mensagem_dependente`
+		FOREIGN KEY (`dependente_id`)
+		REFERENCES `dependente` (`id`)
 );
 
 -- -----------------------------------------------------
@@ -194,3 +199,5 @@ CREATE TABLE `transporte_escola` (
     FOREIGN KEY (`escola_id`)
     REFERENCES `escola` (`id`)
 );
+
+    
