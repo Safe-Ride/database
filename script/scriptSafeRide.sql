@@ -11,7 +11,7 @@ use saferide;
 -- -----------------------------------------------------
 CREATE TABLE `imagem` (
 	`id` INT AUTO_INCREMENT,
-	`imagem` VARCHAR(200) NULL,
+	`caminho` VARCHAR(200) NULL,
 	PRIMARY KEY (`id`)
 );
 -- -----------------------------------------------------
@@ -217,3 +217,5 @@ CREATE TABLE `transporte_escola` (
     FOREIGN KEY (`escola_id`)
     REFERENCES `escola` (`id`)
 );
+
+INSERT INTO imagem VALUES(1, 'profile.png')
