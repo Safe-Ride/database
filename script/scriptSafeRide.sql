@@ -143,7 +143,7 @@ CREATE TABLE `rota` (
 -- -----------------------------------------------------
 -- Table `chat`
 -- -----------------------------------------------------
-CREATE TABLE `chat` (
+CREATE TABLE `historico` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`responsavel_id` INT NOT NULL,
 	`motorista_id` INT NOT NULL,
@@ -165,16 +165,16 @@ CREATE TABLE `mensagem` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`data` DATETIME NULL,
 	`status` INT NOT NULL,
-	`chat_id` INT NOT NULL,
+	`historico_id` INT NOT NULL,
 	`usuario_id` INT NOT NULL,
 	`dependente_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `fk_mensagem_chat_idx` (`chat_id` ASC) VISIBLE,
+	INDEX `fk_mensagem_historico_idx` (`historico_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_usuario_idx` (`usuario_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_dependente_idx` (`dependente_id` ASC) VISIBLE,
-	CONSTRAINT `fk_mensagem_chat`
-		FOREIGN KEY (`chat_id`)
-		REFERENCES `chat` (`id`),
+	CONSTRAINT `fk_mensagem_historico`
+		FOREIGN KEY (`historico_id`)
+		REFERENCES `historico` (`id`),
 	CONSTRAINT `fk_mensagem_usuario`
 		FOREIGN KEY (`usuario_id`)
 		REFERENCES `usuario` (`id`),
