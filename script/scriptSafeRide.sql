@@ -1,3 +1,4 @@
+-- Active: 1685408949990@@localhost@3306@saferide
 CREATE USER IF NOT EXISTS 'safeuser'@'localhost' IDENTIFIED BY 'eunaosei';
 GRANT ALL PRIVILEGES ON saferide.* TO 'safeuser'@'localhost';
 FLUSH PRIVILEGES;
@@ -6,6 +7,14 @@ DROP DATABASE IF EXISTS saferide;
 CREATE DATABASE saferide;
 use saferide;
 
+-- -----------------------------------------------------
+-- Table `Imagem`
+-- -----------------------------------------------------
+CREATE TABLE `imagem` (
+	`id` INT AUTO_INCREMENT,
+	`imagem` VARCHAR(200) NULL,
+	PRIMARY KEY (`id`)
+);
 -- -----------------------------------------------------
 -- Table `usuario`
 -- -----------------------------------------------------
@@ -18,7 +27,12 @@ CREATE TABLE `usuario` (
 	`telefone` CHAR(11) NULL,
 	`data_nascimento` DATE NULL,
 	`tipo` INT NULL,
-	PRIMARY KEY (`id`)
+	`imagem_id` INT DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `fk_usuario_imagem_idx` (`imagem_id` ASC) VISIBLE,
+	CONSTRAINT `fk_usuario_imagem`
+		FOREIGN KEY (`imagem_id`)
+		REFERENCES `imagem` (`id`)
 );
 
 -- -----------------------------------------------------
@@ -64,6 +78,7 @@ CREATE TABLE `dependente` (
 	`escola_id` INT NOT NULL,
 	`responsavel_id` INT NOT NULL,
 	`motorista_id` INT DEFAULT NULL,
+	`imagem_id` INT DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `fk_dependente_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_responsavel`
@@ -76,7 +91,11 @@ CREATE TABLE `dependente` (
 	INDEX `fk_dependente_motorista_idx` (`motorista_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_motorista`
 		FOREIGN KEY (`motorista_id`)
-		REFERENCES `usuario` (`id`)
+		REFERENCES `usuario` (`id`),
+	INDEX `fk_dependente_imagem_idx` (`imagem_id` ASC) VISIBLE,
+	CONSTRAINT `fk_dependente_imagem`
+		FOREIGN KEY (`imagem_id`)
+		REFERENCES `imagem` (`id`)
 );
     
 -- -----------------------------------------------------
@@ -200,4 +219,4 @@ CREATE TABLE `transporte_escola` (
     REFERENCES `escola` (`id`)
 );
 
-    
+SELECT * FROM dependente;
