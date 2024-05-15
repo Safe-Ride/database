@@ -1,4 +1,3 @@
--- Active: 1685408949990@@localhost@3306@saferide
 CREATE USER IF NOT EXISTS 'safeuser'@'localhost' IDENTIFIED BY 'eunaosei';
 GRANT ALL PRIVILEGES ON saferide.* TO 'safeuser'@'localhost';
 FLUSH PRIVILEGES;
@@ -218,5 +217,3 @@ CREATE TABLE `transporte_escola` (
     FOREIGN KEY (`escola_id`)
     REFERENCES `escola` (`id`)
 );
-
-SELECT * FROM dependente;
