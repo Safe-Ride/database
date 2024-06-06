@@ -218,4 +218,28 @@ CREATE TABLE `transporte_escola` (
     REFERENCES `escola` (`id`)
 );
 
+-- -----------------------------------------------------
+-- Table `Pagamento`
+-- -----------------------------------------------------
+CREATE TABLE `pagamento` (
+	`id` INT AUTO_INCREMENT,
+	`cobrador_id` INT NOT NULL,
+	`pagador_id` INT NOT NULL,
+	`data_criacao` DATE NULL,
+	`data_vencimento` DATE NULL,
+	`data_efetuacao` DATE NULL,
+	`valor` DOUBLE NOT NULL,
+	`tipo` INT NOT NULL,
+	`status` INT NOT NULL,
+	INDEX `fk_pagamento_cobrador_idx` (`cobrador_id` ASC) VISIBLE,
+	INDEX `fk_pagamento_pagador_idx` (`pagador_id` ASC) VISIBLE,
+	CONSTRAINT `fk_pagamento_cobrador`
+		FOREIGN KEY (`cobrador_id`)
+		REFERENCES `usuario` (`id`),
+	CONSTRAINT `fk_pagamento_pagador`
+		FOREIGN KEY (`pagador_id`)
+		REFERENCES `usuario` (`id`),
+	PRIMARY KEY (`id`)
+);
+
 INSERT INTO imagem VALUES(1, 'profile.png')
