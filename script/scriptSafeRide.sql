@@ -229,8 +229,8 @@ CREATE TABLE `pagamento` (
 	`data_vencimento` DATE NULL,
 	`data_efetuacao` DATE NULL,
 	`valor` DOUBLE NOT NULL,
-	`tipo` INT NOT NULL,
-	`status` INT NOT NULL,
+	`tipo` INT NULL,
+	`situacao` INT NULL,
 	INDEX `fk_pagamento_cobrador_idx` (`cobrador_id` ASC) VISIBLE,
 	INDEX `fk_pagamento_pagador_idx` (`pagador_id` ASC) VISIBLE,
 	CONSTRAINT `fk_pagamento_cobrador`
@@ -241,5 +241,43 @@ CREATE TABLE `pagamento` (
 		REFERENCES `usuario` (`id`),
 	PRIMARY KEY (`id`)
 );
+
+-- -----------------------------------------------------
+-- View `Pagamento Status`
+-- -----------------------------------------------------
+CREATE VIEW v_pagamento_status AS
+SELECT 
+    COUNT(CASE WHEN p.situacao = 0 THEN 1 END) AS pago,
+    COUNT(CASE WHEN p.situacao = 1 THEN 1 END) AS pendente,
+    COUNT(CASE WHEN p.situacao = 2 THEN 1 END) AS atrasado
+FROM 
+    pagamento AS p;
+    
+-- -----------------------------------------------------
+-- View `Renda Bruta Por Mes`
+-- -----------------------------------------------------
+CREATE VIEW v_renda_bruta_mes AS
+SELECT
+    DATE_FORMAT(data_criacao, '%Y-%m') AS ano_mes,
+    SUM(valor) AS value
+FROM
+    pagamento
+GROUP BY
+    ano_mes
+ORDER BY
+    STR_TO_DATE(ano_mes, '%Y-%m');
+    
+-- -----------------------------------------------------
+-- View `Pagamentos Totais E Efetuados`
+-- -----------------------------------------------------
+CREATE VIEW v_pagamentos_totais_efetuados AS
+SELECT
+    DATE_FORMAT(data_criacao, '%Y-%m') AS ano_mes,
+    SUM(valor) AS total,
+    COALESCE(SUM(CASE WHEN situacao = 0 THEN 1 END), 0) AS efetuados
+FROM
+    pagamento
+GROUP BY
+    ano_mes;
 
 INSERT INTO imagem VALUES(1, 'profile.png')
