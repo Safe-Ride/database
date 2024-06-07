@@ -258,7 +258,7 @@ FROM
 -- -----------------------------------------------------
 CREATE VIEW v_renda_bruta_mes AS
 SELECT
-    DATE_FORMAT(data_criacao, '%Y-%m') AS data,
+    DATE_FORMAT(data_criacao, '%Y-%m-01') AS data,
     SUM(valor) AS valor
 FROM
     pagamento
@@ -272,12 +272,13 @@ ORDER BY
 -- -----------------------------------------------------
 CREATE VIEW v_pagamentos_total_efetuados AS
 SELECT
-    DATE_FORMAT(data_criacao, '%Y-%m') AS data,
-    SUM(valor) AS total,
+    DATE_FORMAT(data_criacao, '%Y-%m-01') AS data,
+    COUNT(valor) AS total,
     COALESCE(SUM(CASE WHEN situacao = 0 THEN 1 END), 0) AS efetuados
 FROM
     pagamento
 GROUP BY
-    data;
+    data 
+LIMIT 4;
 
 INSERT INTO imagem VALUES(1, 'profile.png')
