@@ -139,11 +139,12 @@ CREATE TABLE IF NOT EXISTS `trajeto` (
 -- Table `rota`
 -- -----------------------------------------------------
 CREATE TABLE `rota` (
-	`rota_id` INT AUTO_INCREMENT,
+	`id` INT AUTO_INCREMENT,
 	`trajeto_id` INT NOT NULL,
 	`dependente_id` INT NOT NULL,
 	`endereco_id` INT NOT NULL,
-	PRIMARY KEY (`rota_id`, `trajeto_id`, `dependente_id`, `endereco_id`),
+    `status` INT NOT NULL,
+	PRIMARY KEY (`id`),
 	INDEX `fk_rota_trajeto_idx` (`dependente_id` ASC) VISIBLE,
 	INDEX `fk_rota_dependente_idx` (`trajeto_id` ASC) VISIBLE,
 	INDEX `fk_rota_endereco_idx` (`endereco_id` ASC) VISIBLE,
@@ -157,7 +158,7 @@ CREATE TABLE `rota` (
 		FOREIGN KEY (`endereco_id`)
 		REFERENCES `endereco` (`id`)
 );
-    
+
 -- -----------------------------------------------------
 -- Table `chat`
 -- -----------------------------------------------------
