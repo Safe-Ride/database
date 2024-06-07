@@ -278,6 +278,6 @@ SELECT
 FROM
     pagamento
 GROUP BY
-    ano_mes;
+    data;
 
 INSERT INTO imagem VALUES(1, 'profile.png')
