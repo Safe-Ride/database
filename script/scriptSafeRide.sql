@@ -258,21 +258,21 @@ FROM
 -- -----------------------------------------------------
 CREATE VIEW v_renda_bruta_mes AS
 SELECT
-    DATE_FORMAT(data_criacao, '%Y-%m') AS ano_mes,
-    SUM(valor) AS value
+    DATE_FORMAT(data_criacao, '%Y-%m') AS data,
+    SUM(valor) AS valor
 FROM
     pagamento
 GROUP BY
-    ano_mes
+    data
 ORDER BY
-    STR_TO_DATE(ano_mes, '%Y-%m');
+    STR_TO_DATE(data, '%Y-%m');
     
 -- -----------------------------------------------------
 -- View `Pagamentos Totais E Efetuados`
 -- -----------------------------------------------------
-CREATE VIEW v_pagamentos_totais_efetuados AS
+CREATE VIEW v_pagamentos_total_efetuados AS
 SELECT
-    DATE_FORMAT(data_criacao, '%Y-%m') AS ano_mes,
+    DATE_FORMAT(data_criacao, '%Y-%m') AS data,
     SUM(valor) AS total,
     COALESCE(SUM(CASE WHEN situacao = 0 THEN 1 END), 0) AS efetuados
 FROM
