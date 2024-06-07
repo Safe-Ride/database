@@ -1,6 +1,3 @@
--- Active: 1716832161437@@127.0.0.1@3306@saferide
-
-
 DROP DATABASE IF EXISTS saferide;
 CREATE DATABASE saferide;
 use saferide;
@@ -18,7 +15,7 @@ CREATE TABLE `imagem` (
 -- -----------------------------------------------------
 CREATE TABLE `usuario` (
 	`id` INT AUTO_INCREMENT,
-	`nome` VARCHAR(45) NULL,
+	`nome` VARCHAR(200) NULL,
 	`email` VARCHAR(45) NULL,
 	`senha` CHAR(64) NULL,
 	`cpf` CHAR(15) NULL,
@@ -56,7 +53,7 @@ CREATE TABLE `endereco` (
 -- -----------------------------------------------------
 CREATE TABLE `escola` (
 	`id` INT NOT NULL AUTO_INCREMENT,
-	`nome` VARCHAR(45) NULL DEFAULT NULL,
+	`nome` VARCHAR(300) NULL DEFAULT NULL,
 	`endereco_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `fk_escola_endereco_idx` (`endereco_id` ASC) VISIBLE,
@@ -70,7 +67,7 @@ CREATE TABLE `escola` (
 -- -----------------------------------------------------
 CREATE TABLE `dependente` (
 	`id` INT NOT NULL AUTO_INCREMENT,
-	`nome` VARCHAR(45) NULL,
+	`nome` VARCHAR(200) NULL,
 	`data_nascimento` DATE NULL,
 	`serie` VARCHAR(45) NULL,
 	`escola_id` INT NOT NULL,
