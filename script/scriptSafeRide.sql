@@ -289,38 +289,38 @@ INSERT INTO `imagem` (`caminho`) VALUES
 
 -- Inserindo registros na tabela `usuario`
 INSERT INTO `usuario` (`nome`, `email`, `senha`, `cpf`, `telefone`, `data_nascimento`, `tipo`, `imagem_id`) VALUES
-('Motorista 1', 'motorista1@example.com', 'senha1', '12345678901', '11999999991', '1980-01-01', 1, 1),
-('Motorista 2', 'motorista2@example.com', 'senha2', '12345678902', '11999999992', '1981-02-02', 1, 1),
-('Motorista 3', 'motorista3@example.com', 'senha3', '12345678903', '11999999993', '1982-03-03', 1, 1),
-('Motorista 4', 'motorista4@example.com', 'senha4', '12345678904', '11999999994', '1983-04-04', 1, 1),
-('Motorista 5', 'motorista5@example.com', 'senha5', '12345678905', '11999999995', '1984-05-05', 1, 1),
-('Responsável 1', 'responsavel1@example.com', 'senha6', '12345678906', '11999999996', '1985-06-06', 2, 1),
-('Responsável 2', 'responsavel2@example.com', 'senha7', '12345678907', '11999999997', '1986-07-07', 2, 1),
-('Responsável 3', 'responsavel3@example.com', 'senha8', '12345678908', '11999999998', '1987-08-08', 2, 1),
-('Responsável 4', 'responsavel4@example.com', 'senha9', '12345678909', '11999999999', '1988-09-09', 2, 1),
-('Responsável 5', 'responsavel5@example.com', 'senha10', '12345678910', '11999999900', '1989-10-10', 2, 1),
-('Responsável 6', 'responsavel6@example.com', 'senha11', '12345678911', '11999999911', '1990-11-11', 2, 1),
-('Responsável 7', 'responsavel7@example.com', 'senha12', '12345678912', '11999999912', '1991-12-12', 2, 1),
-('Responsável 8', 'responsavel8@example.com', 'senha13', '12345678913', '11999999913', '1992-01-13', 2, 1),
-('Responsável 9', 'responsavel9@example.com', 'senha14', '12345678914', '11999999914', '1993-02-14', 2, 1),
-('Responsável 10', 'responsavel10@example.com', 'senha15', '12345678915', '11999999915', '1994-03-15', 2, 1),
-('Responsável 11', 'responsavel11@example.com', 'senha16', '12345678916', '11999999916', '1995-04-16', 2, 1),
-('Responsável 12', 'responsavel12@example.com', 'senha17', '12345678917', '11999999917', '1996-05-17', 2, 1),
-('Responsável 13', 'responsavel13@example.com', 'senha18', '12345678918', '11999999918', '1997-06-18', 2, 1),
-('Responsável 14', 'responsavel14@example.com', 'senha19', '12345678919', '11999999919', '1998-07-19', 2, 1),
-('Responsável 15', 'responsavel15@example.com', 'senha20', '12345678920', '11999999920', '1999-08-20', 2, 1),
-('Responsável 16', 'responsavel16@example.com', 'senha21', '12345678921', '11999999921', '2000-09-21', 2, 1),
-('Responsável 17', 'responsavel17@example.com', 'senha22', '12345678922', '11999999922', '2001-10-22', 2, 1),
-('Responsável 18', 'responsavel18@example.com', 'senha23', '12345678923', '11999999923', '2002-11-23', 2, 1),
-('Responsável 19', 'responsavel19@example.com', 'senha24', '12345678924', '11999999924', '2003-12-24', 2, 1),
-('Responsável 20', 'responsavel20@example.com', 'senha25', '12345678925', '11999999925', '2004-01-25', 2, 1),
-('Responsável 21', 'responsavel21@example.com', 'senha26', '12345678926', '11999999926', '2005-02-26', 2, 1),
-('Responsável 22', 'responsavel22@example.com', 'senha27', '12345678927', '11999999927', '2006-03-27', 2, 1),
-('Responsável 23', 'responsavel23@example.com', 'senha28', '12345678928', '11999999928', '2007-04-28', 2, 1),
-('Responsável 24', 'responsavel24@example.com', 'senha29', '12345678929', '11999999929', '2008-05-29', 2, 1),
-('Responsável 25', 'responsavel25@example.com', 'senha30', '12345678930', '11999999930', '2009-06-30', 2, 1),
-('AdminMotorista', 'safe20.ride24@gmail.com', 'admin@admin', '12345678950','11952034428', '2005-03-25', 1,1),
-('AdminResponsavel', 'safe20.ride24@gmail.com', 'admin@admin', '12345678950','11952034428', '2005-03-25', 2,1);
+('Motorista 2', 'motorista2@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678902', '11999999992', '1981-02-02', 0, 1),
+('Motorista 3', 'motorista3@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678903', '11999999993', '1982-03-03', 0, 1),
+('Motorista 1', 'motorista1@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678901', '11999999991', '1980-01-01', 0, 1),
+('Motorista 4', 'motorista4@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678904', '11999999994', '1983-04-04', 0, 1),
+('Motorista 5', 'motorista5@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678905', '11999999995', '1984-05-05', 0, 1),
+('Responsável 1', 'responsavel1@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678906', '11999999996', '1985-06-06', 1, 1),
+('Responsável 2', 'responsavel2@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678907', '11999999997', '1986-07-07', 1, 1),
+('Responsável 3', 'responsavel3@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678908', '11999999998', '1987-08-08', 1, 1),
+('Responsável 4', 'responsavel4@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678909', '11999999999', '1988-09-09', 1, 1),
+('Responsável 5', 'responsavel5@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678910', '11999999900', '1989-10-10', 1, 1),
+('Responsável 6', 'responsavel6@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678911', '11999999911', '1990-11-11', 1, 1),
+('Responsável 7', 'responsavel7@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678912', '11999999912', '1991-12-12', 1, 1),
+('Responsável 8', 'responsavel8@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678913', '11999999913', '1992-01-13', 1, 1),
+('Responsável 9', 'responsavel9@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678914', '11999999914', '1993-02-14', 1, 1),
+('Responsável 10', 'responsavel10@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678915', '11999999915', '1994-03-15', 1, 1),
+('Responsável 11', 'responsavel11@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678916', '11999999916', '1995-04-16', 1, 1),
+('Responsável 12', 'responsavel12@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678917', '11999999917', '1996-05-17', 1, 1),
+('Responsável 13', 'responsavel13@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678918', '11999999918', '1997-06-18', 1, 1),
+('Responsável 14', 'responsavel14@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678919', '11999999919', '1998-07-19', 1, 1),
+('Responsável 15', 'responsavel15@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678920', '11999999920', '1999-08-20', 1, 1),
+('Responsável 16', 'responsavel16@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678921', '11999999921', '2000-09-21', 1, 1),
+('Responsável 17', 'responsavel17@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678922', '11999999922', '2001-10-22', 1, 1),
+('Responsável 18', 'responsavel18@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678923', '11999999923', '2002-11-23', 1, 1),
+('Responsável 19', 'responsavel19@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678924', '11999999924', '2003-12-24', 1, 1),
+('Responsável 20', 'responsavel20@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678925', '11999999925', '2004-01-25', 1, 1),
+('Responsável 21', 'responsavel21@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678926', '11999999926', '2005-02-26', 1, 1),
+('Responsável 22', 'responsavel22@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678927', '11999999927', '2006-03-27', 1, 1),
+('Responsável 23', 'responsavel23@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678928', '11999999928', '2007-04-28', 1, 1),
+('Responsável 24', 'responsavel24@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678929', '11999999929', '2008-05-29', 1, 1),
+('Responsável 25', 'responsavel25@example.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678930', '11999999930', '2009-06-30', 1, 1),
+('AdminMotorista', 'safe20.ride24@gmail.com', 'admin@admin', '12345678950','11952034428', '2005-03-25', 0,1),
+('AdminResponsavel', 'safe20.ride24@gmail.com', 'admin@admin', '12345678950','11952034428', '2005-03-25', 1,1);
 
 
 -- Inserindo registros na tabela `endereco`
@@ -412,145 +412,145 @@ INSERT INTO `transporte` (`placa`, `cnpj`, `cnh`, `crm`, `crmc`, `usuario_id`) V
 -- Inserindo registros na tabela `trajeto`
 INSERT INTO `trajeto` (`tipo`, `dia_semana`, `escola_id`, `motorista_id`) VALUES
 -- IDA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(1, 1, 1, 1),
+(0, 0, 1, 1),
 -- VOLTA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(2, 1, 1, 1),
+(1, 0, 1, 1),
 -- IDA, TERÇA, ESCOLA 1, MOTORISTA 1
-(1, 2, 1, 1),
+(0, 1, 1, 1),
 -- VOLTA, TERÇA, ESCOLA 1, MOTORISTA 1
-(2, 2, 1, 1),
+(1, 1, 1, 1),
 -- IDA, QUARTA, ESCOLA 1, MOTORISTA 1
-(1, 3, 1, 1),
+(0, 2, 1, 1),
 -- VOLTA, QUARTA, ESCOLA 1, MOTORISTA 1
-(2, 3, 1, 1),
+(1, 2, 1, 1),
 -- IDA, QUINTA, ESCOLA 1, MOTORISTA 1
-(1, 4, 1, 1),
+(0, 3, 1, 1),
 -- VOLTA, QUINTA, ESCOLA 1, MOTORISTA 1
-(2, 4, 1, 1),
+(1, 3, 1, 1),
 -- IDA, SEXTA, ESCOLA 1, MOTORISTA 1
-(1, 5, 1, 1),
+(0, 4, 1, 1),
 -- VOLTA, SEXTA, ESCOLA 1, MOTORISTA 1
-(2, 5, 1, 1),
+(1, 4, 1, 1),
 -- IDA, SEGUNDA, ESCOLA 2, MOTORISTA 2
-(1, 1, 2, 2),
+(0, 0, 2, 2),
 -- VOLTA, SEGUNDA, ESCOLA 2, MOTORISTA 2
-(2, 1, 2, 2),
+(1, 0, 2, 2),
 -- IDA, TERÇA, ESCOLA 2, MOTORISTA 2
-(1, 2, 2, 2),
+(0, 1, 2, 2),
 -- VOLTA, TERÇA, ESCOLA 2, MOTORISTA 2
-(2, 2, 2, 2),
+(1, 1, 2, 2),
 -- IDA, QUARTA, ESCOLA 2, MOTORISTA 2
-(1, 3, 2, 2),
+(0, 2, 2, 2),
 -- VOLTA, QUARTA, ESCOLA 2, MOTORISTA 2
-(2, 3, 2, 2),
+(1, 2, 2, 2),
 -- IDA, QUINTA, ESCOLA 2, MOTORISTA 2
-(1, 4, 2, 2),
+(0, 3, 2, 2),
 -- VOLTA, QUINTA, ESCOLA 2, MOTORISTA 2
-(2, 4, 2, 2),
+(1, 3, 2, 2),
 -- IDA, SEXTA, ESCOLA 2, MOTORISTA 2
-(1, 5, 2, 2),
+(0, 4, 2, 2),
 -- VOLTA, SEXTA, ESCOLA 2, MOTORISTA 2
-(2, 5, 2, 2),
+(1, 4, 2, 2),
 -- IDA, SEGUNDA, ESCOLA 3, MOTORISTA 3
-(1, 1, 3, 3),
+(0, 0, 3, 3),
 -- VOLTA, SEGUNDA, ESCOLA 3, MOTORISTA 3
-(2, 1, 3, 3),
+(1, 0, 3, 3),
 -- IDA, TERÇA, ESCOLA 3, MOTORISTA 3
-(1, 2, 3, 3),
+(0, 1, 3, 3),
 -- VOLTA, TERÇA, ESCOLA 3, MOTORISTA 3
-(2, 2, 3, 3),
+(1, 1, 3, 3),
 -- IDA, QUARTA, ESCOLA 3, MOTORISTA 3
-(1, 3, 3, 3),
+(0, 2, 3, 3),
 -- VOLTA, QUARTA, ESCOLA 3, MOTORISTA 3
-(2, 3, 3, 3),
+(1, 2, 3, 3),
 -- IDA, QUINTA, ESCOLA 3, MOTORISTA 3
-(1, 4, 3, 3),
+(0, 3, 3, 3),
 -- VOLTA, QUINTA, ESCOLA 3, MOTORISTA 3
-(2, 4, 3, 3),
+(1, 3, 3, 3),
 -- IDA, SEXTA, ESCOLA 3, MOTORISTA 3
-(1, 5, 3, 3),
+(0, 4, 3, 3),
 -- VOLTA, SEXTA, ESCOLA 3, MOTORISTA 3
-(2, 5, 3, 3),
+(1, 4, 3, 3),
 -- IDA, SEGUNDA, ESCOLA 3, MOTORISTA 4
-(1, 1, 3, 4),
+(0, 0, 3, 4),
 -- VOLTA, SEGUNDA, ESCOLA 3, MOTORISTA 4
-(2, 1, 3, 4),
+(1, 0, 3, 4),
 -- IDA, TERÇA, ESCOLA 3, MOTORISTA 4
-(1, 2, 3, 4),
+(0, 1, 3, 4),
 -- VOLTA, TERÇA, ESCOLA 3, MOTORISTA 4
-(2, 2, 3, 4),
+(1, 1, 3, 4),
 -- IDA, QUARTA, ESCOLA 3, MOTORISTA 4
-(1, 3, 3, 4),
+(0, 2, 3, 4),
 -- VOLTA, QUARTA, ESCOLA 3, MOTORISTA 4
-(2, 3, 3, 4),
+(1, 2, 3, 4),
 -- IDA, QUINTA, ESCOLA 3, MOTORISTA 4
-(1, 4, 3, 4),
+(0, 3, 3, 4),
 -- VOLTA, QUINTA, ESCOLA 3, MOTORISTA 4
-(2, 4, 3, 4),
+(1, 3, 3, 4),
 -- IDA, SEXTA, ESCOLA 3, MOTORISTA 4
-(1, 5, 3, 4),
+(0, 4, 3, 4),
 -- VOLTA, SEXTA, ESCOLA 3, MOTORISTA 4
-(2, 5, 3, 4),
+(1, 4, 3, 4),
 -- IDA, SEGUNDA, ESCOLA 4, MOTORISTA 4
-(1, 1, 4, 4),
+(0, 0, 4, 4),
 -- VOLTA, SEGUNDA, ESCOLA 4, MOTORISTA 4
-(2, 1, 4, 4),
+(1, 0, 4, 4),
 -- IDA, TERÇA, ESCOLA 4, MOTORISTA 4
-(1, 2, 4, 4),
+(0, 1, 4, 4),
 -- VOLTA, TERÇA, ESCOLA 4, MOTORISTA 4
-(2, 2, 4, 4),
+(1, 1, 4, 4),
 -- IDA, QUARTA, ESCOLA 4, MOTORISTA 4
-(1, 3, 4, 4),
+(0, 2, 4, 4),
 -- VOLTA, QUARTA, ESCOLA 4, MOTORISTA 4
-(2, 3, 4, 4),
+(1, 2, 4, 4),
 -- IDA, QUINTA, ESCOLA 4, MOTORISTA 4
-(1, 4, 4, 4),
+(0, 3, 4, 4),
 -- VOLTA, QUINTA, ESCOLA 4, MOTORISTA 4
-(2, 4, 4, 4),
+(1, 3, 4, 4),
 -- IDA, SEXTA, ESCOLA 4, MOTORISTA 4
-(1, 5, 4, 4),
+(0, 4, 4, 4),
 -- VOLTA, SEXTA, ESCOLA 4, MOTORISTA 4
-(2, 5, 4, 4),
+(1, 4, 4, 4),
 -- IDA, SEGUNDA, ESCOLA 5, MOTORISTA 4
-(1, 1, 5, 4),
+(0, 0, 5, 4),
 -- VOLTA, SEGUNDA, ESCOLA 5, MOTORISTA 4
-(2, 1, 5, 4),
+(1, 0, 5, 4),
 -- IDA, TERÇA, ESCOLA 5, MOTORISTA 4
-(1, 2, 5, 4),
+(0, 1, 5, 4),
 -- VOLTA, TERÇA, ESCOLA 5, MOTORISTA 4
-(2, 2, 5, 4),
+(1, 1, 5, 4),
 -- IDA, QUARTA, ESCOLA 5, MOTORISTA 4
-(1, 3, 5, 4),
+(0, 2, 5, 4),
 -- VOLTA, QUARTA, ESCOLA 5, MOTORISTA 4
-(2, 3, 5, 4),
+(1, 2, 5, 4),
 -- IDA, QUINTA, ESCOLA 5, MOTORISTA 4
-(1, 4, 5, 4),
+(0, 3, 5, 4),
 -- VOLTA, QUINTA, ESCOLA 5, MOTORISTA 4
-(2, 4, 5, 4),
+(1, 3, 5, 4),
 -- IDA, SEXTA, ESCOLA 5, MOTORISTA 4
-(1, 5, 5, 4),
+(0, 4, 5, 4),
 -- VOLTA, SEXTA, ESCOLA 5, MOTORISTA 4
-(2, 5, 5, 4),
+(1, 4, 5, 4),
 -- IDA, SEGUNDA, ESCOLA 5, MOTORISTA 5
-(1, 1, 5, 5),
+(0, 0, 5, 5),
 -- VOLTA, SEGUNDA, ESCOLA 5, MOTORISTA 5
-(2, 1, 5, 5),
+(1, 0, 5, 5),
 -- IDA, TERÇA, ESCOLA 5, MOTORISTA 5
-(1, 2, 5, 5),
+(0, 1, 5, 5),
 -- VOLTA, TERÇA, ESCOLA 5, MOTORISTA 5
-(2, 2, 5, 5),
+(1, 1, 5, 5),
 -- IDA, QUARTA, ESCOLA 5, MOTORISTA 5
-(1, 3, 5, 5),
+(0, 2, 5, 5),
 -- VOLTA, QUARTA, ESCOLA 5, MOTORISTA 5
-(2, 3, 5, 5),
+(1, 2, 5, 5),
 -- IDA, QUINTA, ESCOLA 5, MOTORISTA 5
-(1, 4, 5, 5),
+(0, 3, 5, 5),
 -- VOLTA, QUINTA, ESCOLA 5, MOTORISTA 5
-(2, 4, 5, 5),
+(1, 3, 5, 5),
 -- IDA, SEXTA, ESCOLA 5, MOTORISTA 5
-(1, 5, 5, 5),
+(0, 4, 5, 5),
 -- VOLTA, SEXTA, ESCOLA 5, MOTORISTA 5
-(2, 5, 5, 5);
+(1, 4, 5, 5);
 
 -- Inserindo registros na tabela `rota`
 INSERT INTO `rota` (`trajeto_id`, `dependente_id`, `endereco_id`) VALUES
@@ -1331,3 +1331,5 @@ INSERT INTO `transporte_escola` (`transporte_id`, `escola_id`) VALUES
 (3, 3),
 (4, 4),
 (5, 5);
+
+SELECT * FROM usuario; 
