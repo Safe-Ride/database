@@ -67,6 +67,26 @@ CREATE TABLE `escola` (
 );
 	
 -- -----------------------------------------------------
+-- Table `contrato`
+-- -----------------------------------------------------
+CREATE TABLE `contrato` (
+	`id` INT AUTO_INCREMENT,
+	`motorista_id` INT NOT NULL,
+	`responsavel_id` INT NOT NULL,
+	`data` DATE NULL,
+	`valor` DOUBLE NOT NULL,
+	INDEX `fk_contrato_motorista_idx` (`motorista_id` ASC) VISIBLE,
+	INDEX `fk_contrato_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
+	CONSTRAINT `fk_contrato_motorista`
+		FOREIGN KEY (`motorista_id`)
+		REFERENCES `usuario` (`id`),
+	CONSTRAINT `fk_contrato_responsavel`
+		FOREIGN KEY (`responsavel_id`)
+		REFERENCES `usuario` (`id`),
+	PRIMARY KEY (`id`)
+);
+
+-- -----------------------------------------------------
 -- Table `dependente`
 -- -----------------------------------------------------
 CREATE TABLE `dependente` (
@@ -78,6 +98,7 @@ CREATE TABLE `dependente` (
 	`responsavel_id` INT NOT NULL,
 	`motorista_id` INT DEFAULT NULL,
 	`imagem_id` INT DEFAULT NULL,
+	`contrato_id` INT DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `fk_dependente_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_responsavel`
@@ -94,7 +115,11 @@ CREATE TABLE `dependente` (
 	INDEX `fk_dependente_imagem_idx` (`imagem_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_imagem`
 		FOREIGN KEY (`imagem_id`)
-		REFERENCES `imagem` (`id`)
+		REFERENCES `imagem` (`id`),
+	INDEX `fk_dependente_contrato_idx` (`contrato_id` ASC) VISIBLE,
+	CONSTRAINT `fk_dependente_contrato`
+		FOREIGN KEY (`contrato_id`)
+		REFERENCES `contrato` (`id`)
 );
     
 -- -----------------------------------------------------
@@ -121,6 +146,7 @@ CREATE TABLE `transporte` (
 CREATE TABLE IF NOT EXISTS `trajeto` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`tipo` INT NOT NULL,
+	`horario` INT NOT NULL,
 	`dia_semana` INT NOT NULL,
 	`escola_id` INT NOT NULL,
 	`motorista_id` INT NOT NULL,
@@ -160,19 +186,19 @@ CREATE TABLE `rota` (
 );
 
 -- -----------------------------------------------------
--- Table `chat`
+-- Table `conversa`
 -- -----------------------------------------------------
-CREATE TABLE `historico` (
+CREATE TABLE `conversa` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`responsavel_id` INT NOT NULL,
 	`motorista_id` INT NOT NULL,
 	PRIMARY KEY (`id`, `motorista_id`, `responsavel_id`),
-	INDEX `fk_chat_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
-	INDEX `fk_chat_motorista_idx` (`motorista_id` ASC) VISIBLE,
-	CONSTRAINT `fk_chat_responsavel`
+	INDEX `fk_conversa_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
+	INDEX `fk_conversa_motorista_idx` (`motorista_id` ASC) VISIBLE,
+	CONSTRAINT `fk_conversa_responsavel`
 		FOREIGN KEY (`responsavel_id`)
 		REFERENCES `usuario` (`id`),
-	CONSTRAINT `fk_chat_motorista`
+	CONSTRAINT `fk_conversa_motorista`
 		FOREIGN KEY (`motorista_id`)
 		REFERENCES `usuario` (`id`)
 );
@@ -184,16 +210,16 @@ CREATE TABLE `mensagem` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`data` DATETIME NULL,
 	`status` INT NOT NULL,
-	`historico_id` INT NOT NULL,
+	`conversa_id` INT NOT NULL,
 	`usuario_id` INT NOT NULL,
 	`dependente_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `fk_mensagem_historico_idx` (`historico_id` ASC) VISIBLE,
+	INDEX `fk_mensagem_conversa_idx` (`conversa_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_usuario_idx` (`usuario_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_dependente_idx` (`dependente_id` ASC) VISIBLE,
-	CONSTRAINT `fk_mensagem_historico`
-		FOREIGN KEY (`historico_id`)
-		REFERENCES `historico` (`id`),
+	CONSTRAINT `fk_mensagem_conversa`
+		FOREIGN KEY (`conversa_id`)
+		REFERENCES `conversa` (`id`),
 	CONSTRAINT `fk_mensagem_usuario`
 		FOREIGN KEY (`usuario_id`)
 		REFERENCES `usuario` (`id`),
@@ -224,22 +250,17 @@ CREATE TABLE `transporte_escola` (
 -- -----------------------------------------------------
 CREATE TABLE `pagamento` (
 	`id` INT AUTO_INCREMENT,
-	`cobrador_id` INT NOT NULL,
-	`pagador_id` INT NOT NULL,
+	`contrato_id` INT NOT NULL,
 	`data_criacao` DATE NULL,
 	`data_vencimento` DATE NULL,
 	`data_efetuacao` DATE NULL,
 	`valor` DOUBLE NOT NULL,
 	`tipo` INT NULL,
-	`situacao` INT NULL,
-	INDEX `fk_pagamento_cobrador_idx` (`cobrador_id` ASC) VISIBLE,
-	INDEX `fk_pagamento_pagador_idx` (`pagador_id` ASC) VISIBLE,
-	CONSTRAINT `fk_pagamento_cobrador`
-		FOREIGN KEY (`cobrador_id`)
-		REFERENCES `usuario` (`id`),
-	CONSTRAINT `fk_pagamento_pagador`
-		FOREIGN KEY (`pagador_id`)
-		REFERENCES `usuario` (`id`),
+	`status` INT NULL,
+	INDEX `fk_pagamento_contrato_idx` (`contrato_id` ASC) VISIBLE,
+	CONSTRAINT `fk_pagamento_contrato`
+		FOREIGN KEY (`contrato_id`)
+		REFERENCES `contrato` (`id`),
 	PRIMARY KEY (`id`)
 );
 
@@ -248,9 +269,9 @@ CREATE TABLE `pagamento` (
 -- -----------------------------------------------------
 CREATE VIEW v_pagamento_status AS
 SELECT 
-    COUNT(CASE WHEN p.situacao = 0 THEN 1 END) AS pago,
-    COUNT(CASE WHEN p.situacao = 1 THEN 1 END) AS pendente,
-    COUNT(CASE WHEN p.situacao = 2 THEN 1 END) AS atrasado
+    COUNT(CASE WHEN p.status = 0 THEN 1 END) AS pago,
+    COUNT(CASE WHEN p.status = 1 THEN 1 END) AS pendente,
+    COUNT(CASE WHEN p.status = 2 THEN 1 END) AS atrasado
 FROM 
     pagamento AS p;
     
@@ -275,7 +296,7 @@ CREATE VIEW v_pagamentos_total_efetuados AS
 SELECT
     DATE_FORMAT(data_criacao, '%Y-%m-01') AS data,
     COUNT(valor) AS total,
-    COALESCE(SUM(CASE WHEN situacao = 0 THEN 1 END), 0) AS efetuados
+    COALESCE(SUM(CASE WHEN status = 0 THEN 1 END), 0) AS efetuados
 FROM
     pagamento
 GROUP BY
