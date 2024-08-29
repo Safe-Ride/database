@@ -67,6 +67,26 @@ CREATE TABLE `escola` (
 );
 	
 -- -----------------------------------------------------
+-- Table `contrato`
+-- -----------------------------------------------------
+CREATE TABLE `contrato` (
+	`id` INT AUTO_INCREMENT,
+	`motorista_id` INT NOT NULL,
+	`responsavel_id` INT NOT NULL,
+	`data` DATE NULL,
+	`valor` DOUBLE NOT NULL,
+	INDEX `fk_contrato_motorista_idx` (`motorista_id` ASC) VISIBLE,
+	INDEX `fk_contrato_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
+	CONSTRAINT `fk_contrato_motorista`
+		FOREIGN KEY (`motorista_id`)
+		REFERENCES `usuario` (`id`),
+	CONSTRAINT `fk_contrato_responsavel`
+		FOREIGN KEY (`responsavel_id`)
+		REFERENCES `usuario` (`id`),
+	PRIMARY KEY (`id`)
+);
+
+-- -----------------------------------------------------
 -- Table `dependente`
 -- -----------------------------------------------------
 CREATE TABLE `dependente` (
@@ -78,6 +98,7 @@ CREATE TABLE `dependente` (
 	`responsavel_id` INT NOT NULL,
 	`motorista_id` INT DEFAULT NULL,
 	`imagem_id` INT DEFAULT NULL,
+	`contrato_id` INT DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `fk_dependente_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_responsavel`
@@ -94,7 +115,11 @@ CREATE TABLE `dependente` (
 	INDEX `fk_dependente_imagem_idx` (`imagem_id` ASC) VISIBLE,
 	CONSTRAINT `fk_dependente_imagem`
 		FOREIGN KEY (`imagem_id`)
-		REFERENCES `imagem` (`id`)
+		REFERENCES `imagem` (`id`),
+	INDEX `fk_dependente_contrato_idx` (`contrato_id` ASC) VISIBLE,
+	CONSTRAINT `fk_dependente_contrato`
+		FOREIGN KEY (`contrato_id`)
+		REFERENCES `contrato` (`id`)
 );
     
 -- -----------------------------------------------------
@@ -121,6 +146,7 @@ CREATE TABLE `transporte` (
 CREATE TABLE IF NOT EXISTS `trajeto` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`tipo` INT NOT NULL,
+	`horario` INT NOT NULL,
 	`dia_semana` INT NOT NULL,
 	`escola_id` INT NOT NULL,
 	`motorista_id` INT NOT NULL,
@@ -159,19 +185,19 @@ CREATE TABLE `rota` (
 );
 
 -- -----------------------------------------------------
--- Table `chat`
+-- Table `conversa`
 -- -----------------------------------------------------
-CREATE TABLE `historico` (
+CREATE TABLE `conversa` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`responsavel_id` INT NOT NULL,
 	`motorista_id` INT NOT NULL,
 	PRIMARY KEY (`id`, `motorista_id`, `responsavel_id`),
-	INDEX `fk_chat_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
-	INDEX `fk_chat_motorista_idx` (`motorista_id` ASC) VISIBLE,
-	CONSTRAINT `fk_chat_responsavel`
+	INDEX `fk_conversa_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
+	INDEX `fk_conversa_motorista_idx` (`motorista_id` ASC) VISIBLE,
+	CONSTRAINT `fk_conversa_responsavel`
 		FOREIGN KEY (`responsavel_id`)
 		REFERENCES `usuario` (`id`),
-	CONSTRAINT `fk_chat_motorista`
+	CONSTRAINT `fk_conversa_motorista`
 		FOREIGN KEY (`motorista_id`)
 		REFERENCES `usuario` (`id`)
 );
@@ -183,16 +209,16 @@ CREATE TABLE `mensagem` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`data` DATETIME NULL,
 	`status` INT NOT NULL,
-	`historico_id` INT NOT NULL,
+	`conversa_id` INT NOT NULL,
 	`usuario_id` INT NOT NULL,
 	`dependente_id` INT NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `fk_mensagem_historico_idx` (`historico_id` ASC) VISIBLE,
+	INDEX `fk_mensagem_conversa_idx` (`conversa_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_usuario_idx` (`usuario_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_dependente_idx` (`dependente_id` ASC) VISIBLE,
-	CONSTRAINT `fk_mensagem_historico`
-		FOREIGN KEY (`historico_id`)
-		REFERENCES `historico` (`id`),
+	CONSTRAINT `fk_mensagem_conversa`
+		FOREIGN KEY (`conversa_id`)
+		REFERENCES `conversa` (`id`),
 	CONSTRAINT `fk_mensagem_usuario`
 		FOREIGN KEY (`usuario_id`)
 		REFERENCES `usuario` (`id`),
@@ -223,22 +249,17 @@ CREATE TABLE `transporte_escola` (
 -- -----------------------------------------------------
 CREATE TABLE `pagamento` (
 	`id` INT AUTO_INCREMENT,
-	`cobrador_id` INT NOT NULL,
-	`pagador_id` INT NOT NULL,
+	`contrato_id` INT NOT NULL,
 	`data_criacao` DATE NULL,
 	`data_vencimento` DATE NULL,
 	`data_efetuacao` DATE NULL,
 	`valor` DOUBLE NOT NULL,
 	`tipo` INT NULL,
-	`situacao` INT NULL,
-	INDEX `fk_pagamento_cobrador_idx` (`cobrador_id` ASC) VISIBLE,
-	INDEX `fk_pagamento_pagador_idx` (`pagador_id` ASC) VISIBLE,
-	CONSTRAINT `fk_pagamento_cobrador`
-		FOREIGN KEY (`cobrador_id`)
-		REFERENCES `usuario` (`id`),
-	CONSTRAINT `fk_pagamento_pagador`
-		FOREIGN KEY (`pagador_id`)
-		REFERENCES `usuario` (`id`),
+	`status` INT NULL,
+	INDEX `fk_pagamento_contrato_idx` (`contrato_id` ASC) VISIBLE,
+	CONSTRAINT `fk_pagamento_contrato`
+		FOREIGN KEY (`contrato_id`)
+		REFERENCES `contrato` (`id`),
 	PRIMARY KEY (`id`)
 );
 
@@ -247,9 +268,9 @@ CREATE TABLE `pagamento` (
 -- -----------------------------------------------------
 CREATE VIEW v_pagamento_status AS
 SELECT 
-    COUNT(CASE WHEN p.situacao = 0 THEN 1 END) AS pago,
-    COUNT(CASE WHEN p.situacao = 1 THEN 1 END) AS pendente,
-    COUNT(CASE WHEN p.situacao = 2 THEN 1 END) AS atrasado
+    COUNT(CASE WHEN p.status = 0 THEN 1 END) AS pago,
+    COUNT(CASE WHEN p.status = 1 THEN 1 END) AS pendente,
+    COUNT(CASE WHEN p.status = 2 THEN 1 END) AS atrasado
 FROM 
     pagamento AS p;
     
@@ -274,7 +295,7 @@ CREATE VIEW v_pagamentos_total_efetuados AS
 SELECT
     DATE_FORMAT(data_criacao, '%Y-%m-01') AS data,
     COUNT(valor) AS total,
-    COALESCE(SUM(CASE WHEN situacao = 0 THEN 1 END), 0) AS efetuados
+    COALESCE(SUM(CASE WHEN status = 0 THEN 1 END), 0) AS efetuados
 FROM
     pagamento
 GROUP BY
@@ -410,147 +431,128 @@ INSERT INTO `transporte` (`placa`, `cnpj`, `cnh`, `crm`, `crmc`, `usuario_id`) V
 ('MNO7890', '56789012000144', '567890123', '5678901', '56789012345678', 5);
 
 -- Inserindo registros na tabela `trajeto`
-INSERT INTO `trajeto` (`tipo`, `dia_semana`, `escola_id`, `motorista_id`) VALUES
+INSERT INTO `trajeto` (`tipo`, `horario`, `dia_semana`, `escola_id`, `motorista_id`) VALUES
 -- IDA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(0, 0, 1, 1),
+(0, 0, 0, 1, 1),
 -- VOLTA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(1, 0, 1, 1),
+(1, 1, 0, 1, 1),
 -- IDA, TERÇA, ESCOLA 1, MOTORISTA 1
-(0, 1, 1, 1),
+(0, 0, 1, 1, 1),
 -- VOLTA, TERÇA, ESCOLA 1, MOTORISTA 1
-(1, 1, 1, 1),
+(1, 1, 1, 1, 1),
 -- IDA, QUARTA, ESCOLA 1, MOTORISTA 1
-(0, 2, 1, 1),
+(0, 0, 2, 1, 1),
 -- VOLTA, QUARTA, ESCOLA 1, MOTORISTA 1
-(1, 2, 1, 1),
+(1, 1, 2, 1, 1),
 -- IDA, QUINTA, ESCOLA 1, MOTORISTA 1
-(0, 3, 1, 1),
+(0, 0, 3, 1, 1),
 -- VOLTA, QUINTA, ESCOLA 1, MOTORISTA 1
-(1, 3, 1, 1),
+(1, 1, 3, 1, 1),
 -- IDA, SEXTA, ESCOLA 1, MOTORISTA 1
-(0, 4, 1, 1),
+(0, 0, 4, 1, 1),
 -- VOLTA, SEXTA, ESCOLA 1, MOTORISTA 1
-(1, 4, 1, 1),
+(1, 1, 4, 1, 1),
 -- IDA, SEGUNDA, ESCOLA 2, MOTORISTA 2
-(0, 0, 2, 2),
+(0, 0, 0, 2, 2),
 -- VOLTA, SEGUNDA, ESCOLA 2, MOTORISTA 2
-(1, 0, 2, 2),
+(1, 1, 0, 2, 2),
 -- IDA, TERÇA, ESCOLA 2, MOTORISTA 2
-(0, 1, 2, 2),
+(0, 0, 1, 2, 2),
 -- VOLTA, TERÇA, ESCOLA 2, MOTORISTA 2
-(1, 1, 2, 2),
+(1, 1, 1, 2, 2),
 -- IDA, QUARTA, ESCOLA 2, MOTORISTA 2
-(0, 2, 2, 2),
+(0, 0, 2, 2, 2),
 -- VOLTA, QUARTA, ESCOLA 2, MOTORISTA 2
-(1, 2, 2, 2),
+(1, 1, 2, 2, 2),
 -- IDA, QUINTA, ESCOLA 2, MOTORISTA 2
-(0, 3, 2, 2),
+(0, 0, 3, 2, 2),
 -- VOLTA, QUINTA, ESCOLA 2, MOTORISTA 2
-(1, 3, 2, 2),
+(1, 1, 3, 2, 2),
 -- IDA, SEXTA, ESCOLA 2, MOTORISTA 2
-(0, 4, 2, 2),
+(0, 0, 4, 2, 2),
 -- VOLTA, SEXTA, ESCOLA 2, MOTORISTA 2
-(1, 4, 2, 2),
+(1, 1, 4, 2, 2),
 -- IDA, SEGUNDA, ESCOLA 3, MOTORISTA 3
-(0, 0, 3, 3),
+(0, 0, 0, 3, 3),
 -- VOLTA, SEGUNDA, ESCOLA 3, MOTORISTA 3
-(1, 0, 3, 3),
+(1, 1, 0, 3, 3),
 -- IDA, TERÇA, ESCOLA 3, MOTORISTA 3
-(0, 1, 3, 3),
+(0, 0, 1, 3, 3),
 -- VOLTA, TERÇA, ESCOLA 3, MOTORISTA 3
-(1, 1, 3, 3),
+(1, 1, 1, 3, 3),
 -- IDA, QUARTA, ESCOLA 3, MOTORISTA 3
-(0, 2, 3, 3),
+(0, 0, 2, 3, 3),
 -- VOLTA, QUARTA, ESCOLA 3, MOTORISTA 3
-(1, 2, 3, 3),
+(1, 1, 2, 3, 3),
 -- IDA, QUINTA, ESCOLA 3, MOTORISTA 3
-(0, 3, 3, 3),
+(0, 0, 3, 3, 3),
 -- VOLTA, QUINTA, ESCOLA 3, MOTORISTA 3
-(1, 3, 3, 3),
+(1, 1, 3, 3, 3),
 -- IDA, SEXTA, ESCOLA 3, MOTORISTA 3
-(0, 4, 3, 3),
+(0, 0, 4, 3, 3),
 -- VOLTA, SEXTA, ESCOLA 3, MOTORISTA 3
-(1, 4, 3, 3),
--- IDA, SEGUNDA, ESCOLA 3, MOTORISTA 4
-(0, 0, 3, 4),
--- VOLTA, SEGUNDA, ESCOLA 3, MOTORISTA 4
-(1, 0, 3, 4),
--- IDA, TERÇA, ESCOLA 3, MOTORISTA 4
-(0, 1, 3, 4),
--- VOLTA, TERÇA, ESCOLA 3, MOTORISTA 4
-(1, 1, 3, 4),
--- IDA, QUARTA, ESCOLA 3, MOTORISTA 4
-(0, 2, 3, 4),
--- VOLTA, QUARTA, ESCOLA 3, MOTORISTA 4
-(1, 2, 3, 4),
--- IDA, QUINTA, ESCOLA 3, MOTORISTA 4
-(0, 3, 3, 4),
--- VOLTA, QUINTA, ESCOLA 3, MOTORISTA 4
-(1, 3, 3, 4),
--- IDA, SEXTA, ESCOLA 3, MOTORISTA 4
-(0, 4, 3, 4),
--- VOLTA, SEXTA, ESCOLA 3, MOTORISTA 4
-(1, 4, 3, 4),
+(1, 1, 4, 3, 3),
 -- IDA, SEGUNDA, ESCOLA 4, MOTORISTA 4
-(0, 0, 4, 4),
+(0, 0, 0, 4, 4),
 -- VOLTA, SEGUNDA, ESCOLA 4, MOTORISTA 4
-(1, 0, 4, 4),
+(1, 1, 0, 4, 4),
 -- IDA, TERÇA, ESCOLA 4, MOTORISTA 4
-(0, 1, 4, 4),
+(0, 0, 1, 4, 4),
 -- VOLTA, TERÇA, ESCOLA 4, MOTORISTA 4
-(1, 1, 4, 4),
+(1, 1, 1, 4, 4),
 -- IDA, QUARTA, ESCOLA 4, MOTORISTA 4
-(0, 2, 4, 4),
+(0, 0, 2, 4, 4),
 -- VOLTA, QUARTA, ESCOLA 4, MOTORISTA 4
-(1, 2, 4, 4),
+(1, 1, 2, 4, 4),
 -- IDA, QUINTA, ESCOLA 4, MOTORISTA 4
-(0, 3, 4, 4),
+(0, 0, 3, 4, 4),
 -- VOLTA, QUINTA, ESCOLA 4, MOTORISTA 4
-(1, 3, 4, 4),
+(1, 1, 3, 4, 4),
 -- IDA, SEXTA, ESCOLA 4, MOTORISTA 4
-(0, 4, 4, 4),
+(0, 0, 4, 4, 4),
 -- VOLTA, SEXTA, ESCOLA 4, MOTORISTA 4
-(1, 4, 4, 4),
+(1, 1, 4, 4, 4),
 -- IDA, SEGUNDA, ESCOLA 5, MOTORISTA 4
-(0, 0, 5, 4),
+(0, 0, 0, 5, 4),
 -- VOLTA, SEGUNDA, ESCOLA 5, MOTORISTA 4
-(1, 0, 5, 4),
+(1, 1, 0, 5, 4),
 -- IDA, TERÇA, ESCOLA 5, MOTORISTA 4
-(0, 1, 5, 4),
+(0, 0, 1, 5, 4),
 -- VOLTA, TERÇA, ESCOLA 5, MOTORISTA 4
-(1, 1, 5, 4),
+(1, 1, 1, 5, 4),
 -- IDA, QUARTA, ESCOLA 5, MOTORISTA 4
-(0, 2, 5, 4),
+(0, 0, 2, 5, 4),
 -- VOLTA, QUARTA, ESCOLA 5, MOTORISTA 4
-(1, 2, 5, 4),
+(1, 1, 2, 5, 4),
 -- IDA, QUINTA, ESCOLA 5, MOTORISTA 4
-(0, 3, 5, 4),
+(0, 0, 3, 5, 4),
 -- VOLTA, QUINTA, ESCOLA 5, MOTORISTA 4
-(1, 3, 5, 4),
+(1, 1, 3, 5, 4),
 -- IDA, SEXTA, ESCOLA 5, MOTORISTA 4
-(0, 4, 5, 4),
+(0, 0, 4, 5, 4),
 -- VOLTA, SEXTA, ESCOLA 5, MOTORISTA 4
-(1, 4, 5, 4),
+(1, 1, 4, 5, 4),
 -- IDA, SEGUNDA, ESCOLA 5, MOTORISTA 5
-(0, 0, 5, 5),
+(0, 0, 0, 5, 5),
 -- VOLTA, SEGUNDA, ESCOLA 5, MOTORISTA 5
-(1, 0, 5, 5),
+(1, 1, 0, 5, 5),
 -- IDA, TERÇA, ESCOLA 5, MOTORISTA 5
-(0, 1, 5, 5),
+(0, 0, 1, 5, 5),
 -- VOLTA, TERÇA, ESCOLA 5, MOTORISTA 5
-(1, 1, 5, 5),
+(1, 1, 1, 5, 5),
 -- IDA, QUARTA, ESCOLA 5, MOTORISTA 5
-(0, 2, 5, 5),
+(0, 0, 2, 5, 5),
 -- VOLTA, QUARTA, ESCOLA 5, MOTORISTA 5
-(1, 2, 5, 5),
+(1, 1, 2, 5, 5),
 -- IDA, QUINTA, ESCOLA 5, MOTORISTA 5
-(0, 3, 5, 5),
+(0, 0, 3, 5, 5),
 -- VOLTA, QUINTA, ESCOLA 5, MOTORISTA 5
-(1, 3, 5, 5),
+(1, 1, 3, 5, 5),
 -- IDA, SEXTA, ESCOLA 5, MOTORISTA 5
-(0, 4, 5, 5),
+(0, 0, 4, 5, 5),
 -- VOLTA, SEXTA, ESCOLA 5, MOTORISTA 5
-(1, 4, 5, 5);
+(1, 1, 4, 5, 5);
+
 
 -- Inserindo registros na tabela `rota`
 INSERT INTO `rota` (`trajeto_id`, `dependente_id`, `endereco_id`) VALUES
@@ -1213,117 +1215,7 @@ INSERT INTO `rota` (`trajeto_id`, `dependente_id`, `endereco_id`) VALUES
 (60, 27, 22),
 (60, 28, 23),
 (60, 29, 24),
-(60, 30, 25),
--- Rota para o trajeto IDA, SEGUNDA, ESCOLA 5, MOTORISTA 5
-(61, 1, 6),
-(61, 2, 7),
-(61, 3, 8),
-(61, 4, 9),
-(61, 5, 10),
-(61, 6, 11),
-(61, 7, 12),
-(61, 8, 13),
-(61, 9, 14),
-(61, 10, 15),
--- Rota para o trajeto VOLTA, SEGUNDA, ESCOLA 5, MOTORISTA 5
-(62, 1, 16),
-(62, 2, 17),
-(62, 3, 18),
-(62, 4, 19),
-(62, 5, 20),
-(62, 6, 21),
-(62, 7, 22),
-(62, 8, 23),
-(62, 9, 24),
-(62, 10, 25),
--- Rota para o trajeto IDA, TERÇA, ESCOLA 5, MOTORISTA 5
-(63, 11, 6),
-(63, 12, 7),
-(63, 13, 8),
-(63, 14, 9),
-(63, 15, 10),
-(63, 16, 11),
-(63, 17, 12),
-(63, 18, 13),
-(63, 19, 14),
-(63, 20, 15),
--- Rota para o trajeto VOLTA, TERÇA, ESCOLA 5, MOTORISTA 5
-(64, 11, 16),
-(64, 12, 17),
-(64, 13, 18),
-(64, 14, 19),
-(64, 15, 20),
-(64, 16, 21),
-(64, 17, 22),
-(64, 18, 23),
-(64, 19, 24),
-(64, 20, 25),
--- Rota para o trajeto IDA, QUARTA, ESCOLA 5, MOTORISTA 5
-(65, 21, 6),
-(65, 22, 7),
-(65, 23, 8),
-(65, 24, 9),
-(65, 25, 10),
-(65, 26, 11),
-(65, 27, 12),
-(65, 28, 13),
-(65, 29, 14),
-(65, 30, 15),
--- Rota para o trajeto VOLTA, QUARTA, ESCOLA 5, MOTORISTA 5
-(66, 21, 16),
-(66, 22, 17),
-(66, 23, 18),
-(66, 24, 19),
-(66, 25, 20),
-(66, 26, 21),
-(66, 27, 22),
-(66, 28, 23),
-(66, 29, 24),
-(66, 30, 25),
--- Rota para o trajeto IDA, QUINTA, ESCOLA 5, MOTORISTA 5
-(67, 31, 6),
-(67, 32, 7),
-(67, 33, 8),
-(67, 34, 9),
-(67, 35, 10),
-(67, 1, 11),
-(67, 2, 12),
-(67, 3, 13),
-(67, 4, 14),
-(67, 5, 15),
--- Rota para o trajeto VOLTA, QUINTA, ESCOLA 5, MOTORISTA 5
-(68, 31, 16),
-(68, 32, 17),
-(68, 33, 18),
-(68, 34, 19),
-(68, 35, 20),
-(68, 1, 21),
-(68, 2, 22),
-(68, 3, 23),
-(68, 4, 24),
-(68, 5, 25),
--- Rota para o trajeto IDA, SEXTA, ESCOLA 5, MOTORISTA 5
-(69, 6, 6),
-(69, 7, 7),
-(69, 8, 8),
-(69, 9, 9),
-(69, 10, 10),
-(69, 11, 11),
-(69, 12, 12),
-(69, 13, 13),
-(69, 14, 14),
-(69, 15, 15),
--- Rota para o trajeto VOLTA, SEXTA, ESCOLA 5, MOTORISTA 5
-(70, 6, 16),
-(70, 7, 17),
-(70, 8, 18),
-(70, 9, 19),
-(70, 10, 20),
-(70, 11, 21),
-(70, 12, 22),
-(70, 13, 23),
-(70, 14, 24),
-(70, 15, 25);
+(60, 30, 25);
 -- Inserindo registros na tabela `transporte_escola`
 INSERT INTO `transporte_escola` (`transporte_id`, `escola_id`) VALUES
 (1, 1),
@@ -1332,4 +1224,4 @@ INSERT INTO `transporte_escola` (`transporte_id`, `escola_id`) VALUES
 (4, 4),
 (5, 5);
 
-SELECT * FROM usuario; 
+SELECT * FROM trajeto; 
