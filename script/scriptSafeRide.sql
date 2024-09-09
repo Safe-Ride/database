@@ -279,7 +279,7 @@ FROM
 -- -----------------------------------------------------
 CREATE VIEW v_renda_bruta_mes AS
 SELECT
-    DATE_FORMAT(data_criacao, '%Y-%m-01') AS data,
+    DATE_FORMAT(data_vencimento, '%Y-%m-%d') AS data,
     SUM(valor) AS valor
 FROM
     pagamento
@@ -293,7 +293,7 @@ ORDER BY
 -- -----------------------------------------------------
 CREATE VIEW v_pagamentos_total_efetuados AS
 SELECT
-    DATE_FORMAT(data_criacao, '%Y-%m-01') AS data,
+    DATE_FORMAT(data_vencimento, '%Y-%m-%d') AS data,
     COUNT(valor) AS total,
     COALESCE(SUM(CASE WHEN status = 0 THEN 1 END), 0) AS efetuados
 FROM
@@ -301,8 +301,6 @@ FROM
 GROUP BY
     data 
 LIMIT 4;
-
-INSERT INTO imagem VALUES(1, 'profile.png')
 
 -- Inserindo registros na tabela `imagem`
 INSERT INTO `imagem` (`caminho`) VALUES
@@ -1223,5 +1221,3 @@ INSERT INTO `transporte_escola` (`transporte_id`, `escola_id`) VALUES
 (3, 3),
 (4, 4),
 (5, 5);
-
-SELECT * FROM trajeto; 
