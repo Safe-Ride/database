@@ -150,6 +150,7 @@ CREATE TABLE IF NOT EXISTS `trajeto` (
 	`dia_semana` INT NOT NULL,
 	`escola_id` INT NOT NULL,
 	`motorista_id` INT NOT NULL,
+    `ativo` boolean,
 	PRIMARY KEY (`id`),
 	INDEX `fk_trajeto_escola_idx` (`escola_id` ASC) VISIBLE,
 	CONSTRAINT `fk_trajeto_escola`
@@ -165,11 +166,12 @@ CREATE TABLE IF NOT EXISTS `trajeto` (
 -- Table `rota`
 -- -----------------------------------------------------
 CREATE TABLE `rota` (
-	`rota_id` INT AUTO_INCREMENT,
+	`id` INT AUTO_INCREMENT,
 	`trajeto_id` INT NOT NULL,
 	`dependente_id` INT NOT NULL,
 	`endereco_id` INT NOT NULL,
-	PRIMARY KEY (`rota_id`, `trajeto_id`, `dependente_id`, `endereco_id`),
+    `status` INT NOT NULL,
+	PRIMARY KEY (`id`, `trajeto_id`, `dependente_id`, `endereco_id`),
 	INDEX `fk_rota_trajeto_idx` (`dependente_id` ASC) VISIBLE,
 	INDEX `fk_rota_dependente_idx` (`trajeto_id` ASC) VISIBLE,
 	INDEX `fk_rota_endereco_idx` (`endereco_id` ASC) VISIBLE,
@@ -357,48 +359,48 @@ INSERT INTO `transporte_escola` VALUES
 (1, 2);
 
 -- Inserindo registros na tabela `trajeto`
-INSERT INTO `trajeto` (`tipo`, `horario`, `dia_semana`, `escola_id`, `motorista_id`) VALUES
+INSERT INTO `trajeto` (`tipo`, `horario`, `dia_semana`, `escola_id`, `motorista_id`, `ativo`) VALUES
 -- IDA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(0, 0, 0, 1, 1),
+(0, 0, 0, 1, 2, false),
 -- VOLTA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(1, 0, 0, 1, 1),
+(1, 0, 0, 1, 2, false),
 -- IDA, TARDE, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(0, 1, 0, 1, 1),
+(0, 1, 0, 1, 2, false),
 -- VOLTA, TARDE, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(1, 1, 0, 1, 1),
+(1, 1, 0, 1, 2, false),
 -- IDA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(0, 0, 0, 2, 1),
+(0, 0, 0, 2, 2, false),
 -- VOLTA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(1, 0, 0, 2, 1),
+(1, 0, 0, 2, 2, false),
 -- IDA, TARDE, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(0, 1, 0, 2, 1),
+(0, 1, 0, 2, 2, false),
 -- VOLTA, TARDE, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(1, 1, 0, 2, 1);
+(1, 1, 0, 2, 2, false);
 
 -- Inserindo registros na tabela `rota`
-INSERT INTO `rota` (`trajeto_id`, `dependente_id`, `endereco_id`) VALUES
+INSERT INTO `rota` (`trajeto_id`, `dependente_id`, `endereco_id`, `status`) VALUES
 -- Rota para o trajeto IDA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(1, 1, 1),
-(1, 2, 7),
-(1, 3, 3),
-(1, 4, 4),
-(1, 5, 4),
-(1, 6, 5),
-(1, 7, 5),
-(1, 8, 6),
-(1, 9, 6),
-(1, 10, 8),
+(1, 1, 1, 0),
+(1, 2, 7, 0),
+(1, 3, 3, 0),
+(1, 4, 4, 0),
+(1, 5, 4, 0),
+(1, 6, 5, 0),
+(1, 7, 5, 0),
+(1, 8, 6, 0),
+(1, 9, 6, 0),
+(1, 10, 8, 0),
 -- Rota para o trajeto VOLTA, SEGUNDA, ESCOLA 1, MOTORISTA 1
-(2, 1, 1),
-(2, 2, 7),
-(2, 3, 3),
-(2, 4, 4),
-(2, 5, 4),
-(2, 6, 5),
-(2, 7, 5),
-(2, 8, 6),
-(2, 9, 6),
-(2, 10, 8);
+(2, 1, 1, 0),
+(2, 2, 7, 0),
+(2, 3, 3, 0),
+(2, 4, 4, 0),
+(2, 5, 4, 0),
+(2, 6, 5, 0),
+(2, 7, 5, 0),
+(2, 8, 6, 0),
+(2, 9, 6, 0),
+(2, 10, 8, 0);
 
 -- Inserindo registros na tabela `conversa`
 INSERT INTO `conversa` (`responsavel_id`, `motorista_id`) VALUES
