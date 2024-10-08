@@ -214,7 +214,7 @@ CREATE TABLE `mensagem` (
 	`conversa_id` INT NOT NULL,
 	`usuario_id` INT NOT NULL,
 	`dependente_id` INT NOT NULL,
-	`lida` BOOLEAN
+	`lida` BOOLEAN,
 	PRIMARY KEY (`id`),
 	INDEX `fk_mensagem_conversa_idx` (`conversa_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_usuario_idx` (`usuario_id` ASC) VISIBLE,
