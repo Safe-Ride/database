@@ -41,6 +41,7 @@ CREATE TABLE `endereco` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`latitude` VARCHAR(45) NULL DEFAULT NULL,
 	`longitude` VARCHAR(45) NULL DEFAULT NULL,
+    `nome` VARCHAR(200) NULL DEFAULT NULL,
 	`cep` CHAR(8) NULL DEFAULT NULL,
 	`numero` DECIMAL(4,0) NULL DEFAULT NULL,
 	`complemento` VARCHAR(45) NULL DEFAULT NULL,
@@ -267,6 +268,41 @@ CREATE TABLE `pagamento` (
 );
 
 -- -----------------------------------------------------
+-- Table `Pagamento`
+-- -----------------------------------------------------
+CREATE TABLE `solicitacao` (
+	`id` INT AUTO_INCREMENT,
+	`responsavel_id` INT NOT NULL,
+	`motorista_id` INT NOT NULL,
+	`endereco_id` INT NOT NULL,
+	`escola_id` INT NOT NULL,
+	`dependente_id` INT NOT NULL,
+	`valor` DOUBLE NULL,
+	`status` INT NOT NULL,
+	INDEX `fk_solicitacao_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
+	INDEX `fk_solicitacao_motorista_idx` (`motorista_id` ASC) VISIBLE,
+	INDEX `fk_solicitacao_endereco_idx` (`endereco_id` ASC) VISIBLE,
+	INDEX `fk_solicitacao_escola_idx` (`escola_id` ASC) VISIBLE,
+	INDEX `fk_solicitacao_dependente_idx` (`dependente_id` ASC) VISIBLE,
+	CONSTRAINT `fk_solicitacao_responsavel`
+		FOREIGN KEY (`responsavel_id`)
+		REFERENCES `usuario` (`id`),
+	CONSTRAINT `fk_solicitacao_motorista`
+		FOREIGN KEY (`motorista_id`)
+		REFERENCES `usuario` (`id`),
+	CONSTRAINT `fk_solicitacao_endereco`
+		FOREIGN KEY (`endereco_id`)
+		REFERENCES `endereco` (`id`),
+	CONSTRAINT `fk_solicitacao_escola`
+		FOREIGN KEY (`escola_id`)
+		REFERENCES `escola` (`id`),
+	CONSTRAINT `fk_solicitacao_dependente`
+		FOREIGN KEY (`dependente_id`)
+		REFERENCES `dependente` (`id`),
+	PRIMARY KEY (`id`)
+);
+
+-- -----------------------------------------------------
 -- View `Pagamento Status`
 -- -----------------------------------------------------
 CREATE VIEW v_pagamento_status AS
@@ -478,3 +514,4 @@ INSERT INTO `pagamento` (`contrato_id`, `data_vencimento`, `data_efetuacao`, `va
 (5, '2024-10-19', NULL, 500.00, 1, 1),
 (5, '2024-11-19', NULL, 500.00, 1, 1),
 (5, '2024-12-19', NULL, 500.00, 1, 1);
+
