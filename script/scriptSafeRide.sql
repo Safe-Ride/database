@@ -214,7 +214,7 @@ CREATE TABLE `mensagem` (
 	`status` INT NOT NULL,
 	`conversa_id` INT NOT NULL,
 	`usuario_id` INT NOT NULL,
-	`dependente_id` INT NOT NULL,
+	`dependente_id` INT NULL,
 	`lida` BOOLEAN,
 	PRIMARY KEY (`id`),
 	INDEX `fk_mensagem_conversa_idx` (`conversa_id` ASC) VISIBLE,
@@ -280,7 +280,7 @@ CREATE TABLE `solicitacao` (
     `periodo` INT NULL,
 	`valor` DOUBLE NULL,
     `horario_ida` TIME NULL,
-    `horario_colta` TIME NULL,
+    `horario_volta` TIME NULL,
     `contrato_inicio` DATE NULL,
     `contrato_fim` DATE NULL,
     `tipo` VARCHAR(9) NULL,
@@ -459,6 +459,14 @@ INSERT INTO `conversa` (`responsavel_id`, `motorista_id`) VALUES
 (4, 2),
 (5, 2),
 (6, 2);
+
+-- Inserindo registros na tabela `contrato`
+INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`, `lida`) VALUES
+(now(), 5, 1, 2, NULL, TRUE),
+(now(), 5, 2, 2, NULL, true),
+(now(), 5, 3, 2, NULL, true),
+(now(), 5, 4, 2, NULL, true),
+(now(), 5, 5, 2, NULL, true);	
 
 -- Inserindo registros na tabela `contrato`
 INSERT INTO `contrato` (`motorista_id`, `responsavel_id`, `data`, `valor`) VALUES
