@@ -212,14 +212,19 @@ CREATE TABLE `mensagem` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`data` DATETIME NULL,
 	`status` INT NOT NULL,
+	`trajeto_id` INT NULL,
 	`conversa_id` INT NOT NULL,
 	`usuario_id` INT NOT NULL,
 	`dependente_id` INT NULL,
-	`lida` BOOLEAN,
+	`lida` BOOLEAN DEFAULT FALSE,
 	PRIMARY KEY (`id`),
+	INDEX `fk_mensagem_trajeto_idx` (`trajeto_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_conversa_idx` (`conversa_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_usuario_idx` (`usuario_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_dependente_idx` (`dependente_id` ASC) VISIBLE,
+    CONSTRAINT `fk_mensagem_trajeto`
+		FOREIGN KEY (`trajeto_id`)
+		REFERENCES `trajeto` (`id`),
 	CONSTRAINT `fk_mensagem_conversa`
 		FOREIGN KEY (`conversa_id`)
 		REFERENCES `conversa` (`id`),
@@ -306,6 +311,21 @@ CREATE TABLE `solicitacao` (
 	CONSTRAINT `fk_solicitacao_dependente`
 		FOREIGN KEY (`dependente_id`)
 		REFERENCES `dependente` (`id`),
+	PRIMARY KEY (`id`)
+);
+
+-----------------------------------------------------
+-- Table `Historico`
+-----------------------------------------------------
+CREATE TABLE `historico` (
+	`id` INT AUTO_INCREMENT,
+    `trajeto_id` INT NOT NULL,
+    `horario_inicio` DATETIME NULL,
+    `horario_fim` DATETIME NULL,
+    INDEX `fk_historico_trajeto_idx` (`trajeto_id` ASC) VISIBLE,
+    CONSTRAINT `fk_historico_trajeto`
+		FOREIGN KEY (`trajeto_id`)
+        REFERENCES `trajeto` (`id`),
 	PRIMARY KEY (`id`)
 );
 
@@ -461,14 +481,6 @@ INSERT INTO `conversa` (`responsavel_id`, `motorista_id`) VALUES
 (6, 2);
 
 -- Inserindo registros na tabela `contrato`
-INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`, `lida`) VALUES
-(now(), 5, 1, 2, NULL, TRUE),
-(now(), 5, 2, 2, NULL, true),
-(now(), 5, 3, 2, NULL, true),
-(now(), 5, 4, 2, NULL, true),
-(now(), 5, 5, 2, NULL, true);	
-
--- Inserindo registros na tabela `contrato`
 INSERT INTO `contrato` (`motorista_id`, `responsavel_id`, `data`, `valor`) VALUES
 (2, 1, '2024-07-15', 400.00),
 (2, 3, '2024-05-01', 200.00),
@@ -529,4 +541,44 @@ INSERT INTO `pagamento` (`contrato_id`, `data_vencimento`, `data_efetuacao`, `va
 (5, '2024-10-19', NULL, 500.00, 1, 1),
 (5, '2024-11-19', NULL, 500.00, 1, 1),
 (5, '2024-12-19', NULL, 500.00, 1, 1);
+
+-- Inserindo registros na tabela `mensagem`
+INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`) VALUES
+-- Mensagem default
+(now(), 5, 1, 2, 1),
+(now(), 5, 2, 2, 2),
+(now(), 5, 3, 2, 3),
+(now(), 5, 4, 2, 4),
+(now(), 5, 5, 2, 5);	
+
+-- Inserindo registros na tabela `mensagem`
+INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`, `trajeto_id`) VALUES
+('2024-10-10 12:24', 3, 1, 2, 1, 1),
+('2024-10-10 13:00', 4, 1, 2, 1, 1),
+('2024-10-10 17:30', 3, 1, 2, 1, 2),
+('2024-10-10 13:00', 5, 1, 2, 1, 2);
+
+insert into `historico` (`trajeto_id`, `horario_inicio`, `horario_fim`) VALUES
+(1, '2024-10-10 05:11', '2024-10-10 06:59'),
+(2, '2024-10-10 12:33', '2024-10-10 13:42');
+
+SELECT hi.*,
+       CASE WHEN tr.tipo = 0 THEN 'IDA' ELSE 'VOLTA' END AS tr_sentido,
+       CASE WHEN tr.horario = 0 THEN 'MANHA' ELSE 'TARDE' END AS tr_horario,
+       (SELECT nome FROM escola WHERE escola.id = tr.escola_id) AS de_es_nome,
+       de.id AS de_id,
+       de.nome AS de_nome,
+       (SELECT cep FROM endereco WHERE endereco.id = ro.endereco_id) AS de_en_nome,
+       us.id AS re_id,
+       (SELECT me.data FROM mensagem me 	
+					   WHERE me.dependente_id = de.id 
+                       AND me.status = 3
+                       AND me.trajeto_id = tr.id) AS horario_na_van,
+       us.nome AS re_nome
+		  FROM historico hi
+		  JOIN trajeto tr ON hi.trajeto_id = tr.id
+		  JOIN rota ro ON ro.trajeto_id = tr.id
+		  JOIN dependente de ON ro.dependente_id = de.id
+		  JOIN usuario us ON de.responsavel_id = us.id
+				WHERE us.id = 1;
 
