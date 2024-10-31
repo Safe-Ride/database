@@ -371,15 +371,15 @@ INSERT INTO `usuario` (`id`,`nome`, `email`, `senha`, `cpf`, `telefone`, `data_n
 
 
 -- Inserindo registros na tabela `endereco`
-INSERT INTO `endereco` (`latitude`, `longitude`, `cep`, `numero`, `complemento`, `usuario_id`) VALUES
-('23.5505', '46.6333', '01002000', 2, 'Apto 2', 2),
-('23.5505', '46.6333', '01001000', 1, 'Apto 1', 1),
-('23.5515', '46.6343', '01007000', 7, 'Apto 7', 1),
-('23.5505', '46.6333', '01003000', 3, 'Apto 3', 3),
-('23.5505', '46.6333', '01004000', 4, 'Apto 4', 4),
-('23.5505', '46.6333', '01005000', 5, 'Apto 5', 5),
-('23.5515', '46.6343', '01006000', 6, 'Apto 6', 6),
-('23.5515', '46.6343', '01008000', 8, 'Apto 8', 6);
+INSERT INTO `endereco` (`latitude`, `longitude`, `cep`,`nome`, `numero`, `complemento`, `usuario_id`) VALUES
+('23.5505', '46.6333', '01002000','Av.Paulista', 2, 'Apto 2', 2),
+('23.5505', '46.6333', '01001000','Rua Jandira Figueira', 1, 'Apto 1', 1),
+('23.5515', '46.6343', '01007000','Rua Augusta', 7, 'Apto 7', 1),
+('23.5505', '46.6333', '01003000','Rua caminha de amorim', 3, 'Apto 3', 3),
+('23.5505', '46.6333', '01004000','Rua Engenheiro Armando', 4, 'Apto 4', 4),
+('23.5505', '46.6333', '01005000','Rua do Céu', 5, 'Apto 5', 5),
+('23.5515', '46.6343', '01006000','Travessa Adelia', 6, 'Apto 6', 6),
+('23.5515', '46.6343', '01008000','Rua Ernimeu', 8, 'Apto 8', 6);
 
 -- Inserindo registros na tabela `escola`
 INSERT INTO `escola` (`nome`, `endereco_id`) VALUES
@@ -529,4 +529,76 @@ INSERT INTO `pagamento` (`contrato_id`, `data_vencimento`, `data_efetuacao`, `va
 (5, '2024-10-19', NULL, 500.00, 1, 1),
 (5, '2024-11-19', NULL, 500.00, 1, 1),
 (5, '2024-12-19', NULL, 500.00, 1, 1);
+
+
+-- Inserindo registros na tabela `mensagem`
+INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`) VALUES
+-- Mensagem default
+(now(), 5, 1, 2, 1),
+(now(), 5, 2, 2, 2),
+(now(), 5, 3, 2, 3),
+(now(), 5, 4, 2, 4),
+(now(), 5, 5, 2, 5);	
+
+-- Inserindo registros na tabela `mensagem`
+INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`, `trajeto_id`) VALUES
+('2024-10-10 12:24', 3, 1, 2, 1, 1),
+('2024-10-10 13:00', 4, 1, 2, 1, 1),
+('2024-10-10 17:30', 3, 1, 2, 1, 2),
+('2024-10-10 13:00', 5, 1, 2, 1, 2);
+
+insert into `historico` (`trajeto_id`, `horario_inicio`, `horario_fim`) VALUES
+(1, '2024-10-10 05:11', '2024-10-10 06:59'),
+(2, '2024-10-10 12:33', '2024-10-10 13:42');
+
+-- View Status do dependente a partir do resposanvel--
+CREATE VIEW v_listar_status_dependente_por_responsavel AS 
+SELECT 
+       hi.id as historico_id,
+       hi.trajeto_id as trajeto_id,
+       hi.horario_inicio as horario_inicio,
+       hi.horario_fim as horario_fim,
+       CASE WHEN tr.tipo = 0 THEN 'IDA' ELSE 'VOLTA' END AS trajeto_sentido,
+       CASE WHEN tr.horario = 0 THEN 'MANHA' ELSE 'TARDE' END AS trajeto_horario,
+       (SELECT nome FROM escola WHERE escola.id = tr.escola_id) AS de_es_nome,
+       de.id AS de_id,
+       de.nome AS de_nome,
+       (SELECT nome FROM endereco WHERE endereco.id = ro.endereco_id) AS de_en_nome,
+       us.id AS re_id,
+       us.nome AS re_nome,
+       me.status as mensagem_status
+FROM historico hi
+JOIN trajeto tr ON hi.trajeto_id = tr.id
+JOIN mensagem me ON me.trajeto_id = tr.id
+JOIN rota ro ON ro.trajeto_id = tr.id
+JOIN dependente de ON ro.dependente_id = de.id
+JOIN usuario us ON de.responsavel_id = us.id
+GROUP BY 
+      de_id;
+          
+          -- view dos pagamentos e contratos do motorista --
+          create view detalhe_pagamento_do_motorista as
+          SELECT 
+    u_responsavel.nome AS responsavel_nome,
+    u_responsavel.email AS responsavel_email,
+    p.data_criacao AS pagamento_data_criacao,
+    p.data_vencimento AS pagamento_data_vencimento,
+    p.data_efetuacao AS pagamento_data_efetuacao,
+    CASE WHEN p.tipo = 0 THEN "PIX" ELSE "BOLETO" END AS pagamento_tipo,
+    p.valor AS pagamento_valor,
+    CASE WHEN p.status = 0 then "pago" 
+    WHEN p.status = 1 then "pendente"
+    ELSE "atrasado"
+    END AS pagamento_status,
+    u_motorista.id as motorista_id
+FROM 
+    pagamento p
+JOIN 
+    contrato c ON p.contrato_id = c.id
+JOIN 
+    usuario u_motorista ON c.motorista_id = u_motorista.id AND u_motorista.tipo = 0
+JOIN 
+    usuario u_responsavel ON c.responsavel_id = u_responsavel.id AND u_responsavel.tipo = 1;
+			
+
 
