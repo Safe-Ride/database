@@ -76,7 +76,8 @@ CREATE TABLE `contrato` (
 	`id` INT AUTO_INCREMENT,
 	`motorista_id` INT NOT NULL,
 	`responsavel_id` INT NOT NULL,
-	`data` DATE NULL,
+	`data_inicio` DATE NULL,
+    `data_fim` DATE NULL,
 	`valor` DOUBLE NOT NULL,
 	INDEX `fk_contrato_motorista_idx` (`motorista_id` ASC) VISIBLE,
 	INDEX `fk_contrato_responsavel_idx` (`responsavel_id` ASC) VISIBLE,
@@ -419,7 +420,8 @@ INSERT INTO `dependente` (`nome`, `data_nascimento`, `serie`, `escola_id`, `resp
 ('Dependente 7', '2010-07-07', '2ª série', 2, 5, 2, 1),
 ('Dependente 8', '2010-08-08', '2ª série', 2, 6, 2, 1),
 ('Dependente 9', '2010-09-09', '2ª série', 2, 6, 2, 1),
-('Dependente 10', '2010-10-10', '2ª série', 2, 6, 2, 1);
+('Dependente 10', '2010-10-10', '2ª série', 2, 6, 2, 1),
+("Dependente 11", "2010-01-30", "9° Ano Fundamental", 1, 1, NULL, 1);
 
 -- Inserindo registros na tabela `transporte`
 INSERT INTO `transporte` (`placa`, `cnpj`, `cnh`, `crm`, `crmc`, `usuario_id`) VALUES
@@ -483,12 +485,12 @@ INSERT INTO `conversa` (`responsavel_id`, `motorista_id`) VALUES
 (6, 2);
 
 -- Inserindo registros na tabela `contrato`
-INSERT INTO `contrato` (`motorista_id`, `responsavel_id`, `data`, `valor`) VALUES
-(2, 1, '2024-07-15', 400.00),
-(2, 3, '2024-05-01', 200.00),
-(2, 4, '2024-01-16', 500.00),
-(2, 5, '2024-01-03', 400.00),
-(2, 6, '2024-01-19', 600.00);
+INSERT INTO `contrato` (`motorista_id`, `responsavel_id`, `data_inicio`, `data_fim`, `valor`) VALUES
+(2, 1, '2024-07-15', '2025-07-15', 400.00),
+(2, 3, '2024-05-01', '2025-05-01', 200.00),
+(2, 4, '2024-01-16', '2025-01-16', 500.00),
+(2, 5, '2024-01-03', '2025-01-03', 400.00),
+(2, 6, '2024-01-19', '2025-01-19', 600.00);
 
 -- Inserindo registros na tabela `pagamento`
 INSERT INTO `pagamento` (`contrato_id`, `data_vencimento`, `data_efetuacao`, `valor`, `tipo`, `status`) VALUES
