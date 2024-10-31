@@ -2,6 +2,8 @@ CREATE USER IF NOT EXISTS 'safeuser'@'localhost' IDENTIFIED BY 'eunaosei';
 GRANT ALL PRIVILEGES ON saferide.* TO 'safeuser'@'localhost';
 FLUSH PRIVILEGES;
 
+SET  GLOBAL sql_mode = (SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));
+
 DROP DATABASE IF EXISTS saferide;
 CREATE DATABASE saferide;
 use saferide;
@@ -212,14 +214,19 @@ CREATE TABLE `mensagem` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`data` DATETIME NULL,
 	`status` INT NOT NULL,
+	`trajeto_id` INT NULL,
 	`conversa_id` INT NOT NULL,
 	`usuario_id` INT NOT NULL,
 	`dependente_id` INT NULL,
-	`lida` BOOLEAN,
+	`lida` BOOLEAN DEFAULT FALSE,
 	PRIMARY KEY (`id`),
+	INDEX `fk_mensagem_trajeto_idx` (`trajeto_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_conversa_idx` (`conversa_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_usuario_idx` (`usuario_id` ASC) VISIBLE,
 	INDEX `fk_mensagem_dependente_idx` (`dependente_id` ASC) VISIBLE,
+    CONSTRAINT `fk_mensagem_trajeto`
+		FOREIGN KEY (`trajeto_id`)
+		REFERENCES `trajeto` (`id`),
 	CONSTRAINT `fk_mensagem_conversa`
 		FOREIGN KEY (`conversa_id`)
 		REFERENCES `conversa` (`id`),
@@ -306,6 +313,21 @@ CREATE TABLE `solicitacao` (
 	CONSTRAINT `fk_solicitacao_dependente`
 		FOREIGN KEY (`dependente_id`)
 		REFERENCES `dependente` (`id`),
+	PRIMARY KEY (`id`)
+);
+
+-----------------------------------------------------
+-- Table `Historico`
+-----------------------------------------------------
+CREATE TABLE `historico` (
+	`id` INT AUTO_INCREMENT,
+    `trajeto_id` INT NOT NULL,
+    `horario_inicio` DATETIME NULL,
+    `horario_fim` DATETIME NULL,
+    INDEX `fk_historico_trajeto_idx` (`trajeto_id` ASC) VISIBLE,
+    CONSTRAINT `fk_historico_trajeto`
+		FOREIGN KEY (`trajeto_id`)
+        REFERENCES `trajeto` (`id`),
 	PRIMARY KEY (`id`)
 );
 
@@ -461,14 +483,6 @@ INSERT INTO `conversa` (`responsavel_id`, `motorista_id`) VALUES
 (6, 2);
 
 -- Inserindo registros na tabela `contrato`
-INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`, `lida`) VALUES
-(now(), 5, 1, 2, NULL, TRUE),
-(now(), 5, 2, 2, NULL, true),
-(now(), 5, 3, 2, NULL, true),
-(now(), 5, 4, 2, NULL, true),
-(now(), 5, 5, 2, NULL, true);	
-
--- Inserindo registros na tabela `contrato`
 INSERT INTO `contrato` (`motorista_id`, `responsavel_id`, `data`, `valor`) VALUES
 (2, 1, '2024-07-15', 400.00),
 (2, 3, '2024-05-01', 200.00),
@@ -530,7 +544,6 @@ INSERT INTO `pagamento` (`contrato_id`, `data_vencimento`, `data_efetuacao`, `va
 (5, '2024-11-19', NULL, 500.00, 1, 1),
 (5, '2024-12-19', NULL, 500.00, 1, 1);
 
-
 -- Inserindo registros na tabela `mensagem`
 INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`) VALUES
 -- Mensagem default
@@ -550,6 +563,7 @@ INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependen
 insert into `historico` (`trajeto_id`, `horario_inicio`, `horario_fim`) VALUES
 (1, '2024-10-10 05:11', '2024-10-10 06:59'),
 (2, '2024-10-10 12:33', '2024-10-10 13:42');
+
 
 -- View Status do dependente a partir do resposanvel--
 CREATE VIEW v_listar_status_dependente_por_responsavel AS 
