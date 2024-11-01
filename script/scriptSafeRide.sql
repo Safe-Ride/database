@@ -394,20 +394,22 @@ INSERT INTO `usuario` (`id`,`nome`, `email`, `senha`, `cpf`, `telefone`, `data_n
 
 
 -- Inserindo registros na tabela `endereco`
-INSERT INTO `endereco` (`latitude`, `longitude`, `cep`,`nome`, `numero`, `complemento`, `usuario_id`) VALUES
-('23.5505', '46.6333', '01002000','Av.Paulista', 2, 'Apto 2', 2),
-('23.5505', '46.6333', '01001000','Rua Jandira Figueira', 1, 'Apto 1', 1),
-('23.5515', '46.6343', '01007000','Rua Augusta', 7, 'Apto 7', 1),
-('23.5505', '46.6333', '01003000','Rua caminha de amorim', 3, 'Apto 3', 3),
-('23.5505', '46.6333', '01004000','Rua Engenheiro Armando', 4, 'Apto 4', 4),
-('23.5505', '46.6333', '01005000','Rua do Céu', 5, 'Apto 5', 5),
-('23.5515', '46.6343', '01006000','Travessa Adelia', 6, 'Apto 6', 6),
-('23.5515', '46.6343', '01008000','Rua Ernimeu', 8, 'Apto 8', 6);
+INSERT INTO `endereco` (`id`,`latitude`, `longitude`, `cep`,`nome`, `numero`, `complemento`, `usuario_id`) VALUES
+(1, '23.5505', '46.6333', '01002000','Av.Paulista', 2, 'Apto 2', 2),
+(2, '23.5505', '46.6333', '01001000','Rua Jandira Figueira', 1, 'Apto 1', 1),
+(3, '23.5515', '46.6343', '01007000','Rua Augusta', 7, 'Apto 7', 1),
+(4, '23.5505', '46.6333', '01003000','Rua caminha de amorim', 3, 'Apto 3', 3),
+(5, '23.5505', '46.6333', '01004000','Rua Engenheiro Armando', 4, 'Apto 4', 4),
+(6, '23.5505', '46.6333', '01005000','Rua do Céu', 5, 'Apto 5', 5),
+(7, '23.5515', '46.6343', '01006000','Travessa Adelia', 6, 'Apto 6', 6),
+(8, '23.5515', '46.6343', '01008000','Rua Ernimeu', 8, 'Apto 8', 6),
+(9, '-23.564652598297457', '-46.65071290330969', '01310100','Avenida Paulista', 900, '', 100),
+(10, '-23.598948303991115', '-46.63624325422176', '04035001','Rua Domingos de Morais', 2565, 'Shopping Santa Cruz', 100);
 
 -- Inserindo registros na tabela `escola`
 INSERT INTO `escola` (`nome`, `endereco_id`) VALUES
-('Escola 1', 1),
-('Escola 2', 2);
+('Objetivo Paulista', 9),
+('Colégio Marista', 10);
 
 -- Inserindo registros na tabela `dependente`
 INSERT INTO `dependente` (`nome`, `data_nascimento`, `serie`, `escola_id`, `responsavel_id`, `motorista_id`, `imagem_id`) VALUES
@@ -549,11 +551,11 @@ INSERT INTO `pagamento` (`contrato_id`, `data_vencimento`, `data_efetuacao`, `va
 -- Inserindo registros na tabela `mensagem`
 INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`) VALUES
 -- Mensagem default
-(now(), 5, 1, 2, 1),
-(now(), 5, 2, 2, 2),
-(now(), 5, 3, 2, 3),
-(now(), 5, 4, 2, 4),
-(now(), 5, 5, 2, 5);	
+(now(), 6, 1, 2, 1),
+(now(), 6, 2, 2, 2),
+(now(), 6, 3, 2, 3),
+(now(), 6, 4, 2, 4),
+(now(), 6, 5, 2, 5);	
 
 -- Inserindo registros na tabela `mensagem`
 INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`, `trajeto_id`) VALUES
