@@ -1,0 +1,73 @@
+name: Run Selenium Automation
+
+on:
+  push:
+    # branches:
+    #   - SR-105  # Ou outra branch desejada
+  workflow_dispatch:  # Permite rodar manualmente pelo GitHub Actions
+
+jobs:
+  automation:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Configuração do ambiente
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Set author information
+        id: set_info
+        run: |
+          echo "COMMIT_MESSAGE=${{ github.event.head_commit.message }}" >> $GITHUB_ENV
+          echo "COMMIT_AUTHOR=${{ github.event.head_commit.author.name }}" >> $GITHUB_ENV
+          echo "COMMIT_AUTHOR_EMAIL=${{ github.event.head_commit.author.email }}" >> $GITHUB_ENV
+          echo "REPOSITORY_NAME=${{ github.repository }}" >> $GITHUB_ENV
+          echo "COMMIT_URL=${{ github.event.head_commit.url }}" >> $GITHUB_ENV
+
+
+      - name: Set author password
+        id: author_password
+        run: |
+          case "${{ env.COMMIT_AUTHOR }}" in
+            "lucasrocha2704") echo "commit_author_password=${{ secrets.PASSWORD_lucasrocha2704 }}" >> $GITHUB_ENV ;;
+            "brunolimabh") echo "commit_author_password=${{ secrets.PASSWORD_brunolimabh }}" >> $GITHUB_ENV ;;
+            "daniloBritoo") echo "commit_author_password=${{ secrets.PASSWORD_daniloBritoo }}" >> $GITHUB_ENV ;;
+            "felipeguerrino-sptech") echo "commit_author_password=${{ secrets.PASSWORD_felipeguerrino }}" >> $GITHUB_ENV ;;
+            "Hideki19") echo "commit_author_password=${{ secrets.PASSWORD_Hideki19 }}" >> $GITHUB_ENV ;;
+            "Lucas1Ferreira") echo "commit_author_password=${{ secrets.PASSWORD_Lucas1Ferreira }}" >> $GITHUB_ENV ;;
+            *) echo "commit_author_password=" >> $GITHUB_ENV ;; # Senha vazia caso o autor não seja reconhecido
+          esac
+
+      # 2. Verificar se o Google Chrome está instalado
+      - name: Check if Google Chrome is installed
+        id: chrome
+        run: |
+          if ! command -v google-chrome-stable &> /dev/null
+          then
+            echo "Google Chrome not found, installing..."
+            sudo apt-get update -y
+            sudo apt-get install -y wget
+            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo dpkg -i google-chrome-stable_current_amd64.deb
+            sudo apt-get install -f -y  # Resolve dependências faltantes
+          else
+            echo "Google Chrome is already installed"
+          fi
+
+      # 3. Instalar dependências do Python
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r automacao-relatorio/requirements.txt
+
+      # 4. Rodar o script de automação
+      - name: Run Automation Script
+        env:  
+          COMMIT_MESSAGE: ${{ env.COMMIT_MESSAGE }}
+          COMMIT_AUTHOR: ${{ env.COMMIT_AUTHOR }}
+          COMMIT_AUTHOR_EMAIL: ${{ env.COMMIT_AUTHOR_EMAIL }}
+          COMMIT_AUTHOR_PASSWORD: ${{ env.commit_author_password }}
+          REPOSITORY_NAME: ${{ env.REPOSITORY_NAME }}
+          COMMIT_URL: ${{ env.COMMIT_URL }}
+        run: |
+          python -u automacao-relatorio/main.py
