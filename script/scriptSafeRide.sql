@@ -175,6 +175,7 @@ CREATE TABLE `rota` (
 	`dependente_id` INT NOT NULL,
 	`endereco_id` INT NOT NULL,
     `status` INT NOT NULL,
+    `horario` VARCHAR(5) NULL,
 	PRIMARY KEY (`id`, `trajeto_id`, `dependente_id`, `endereco_id`),
 	INDEX `fk_rota_trajeto_idx` (`dependente_id` ASC) VISIBLE,
 	INDEX `fk_rota_dependente_idx` (`trajeto_id` ASC) VISIBLE,
@@ -395,14 +396,14 @@ INSERT INTO `usuario` (`id`,`nome`, `email`, `senha`, `cpf`, `telefone`, `data_n
 
 -- Inserindo registros na tabela `endereco`
 INSERT INTO `endereco` (`id`,`latitude`, `longitude`, `cep`,`nome`, `numero`, `complemento`, `usuario_id`) VALUES
-(1, '23.5505', '46.6333', '01002000','Av.Paulista', 2, 'Apto 2', 2),
-(2, '23.5505', '46.6333', '01001000','Rua Jandira Figueira', 1, 'Apto 1', 1),
-(3, '23.5515', '46.6343', '01007000','Rua Augusta', 7, 'Apto 7', 1),
-(4, '23.5505', '46.6333', '01003000','Rua caminha de amorim', 3, 'Apto 3', 3),
-(5, '23.5505', '46.6333', '01004000','Rua Engenheiro Armando', 4, 'Apto 4', 4),
-(6, '23.5505', '46.6333', '01005000','Rua do Céu', 5, 'Apto 5', 5),
-(7, '23.5515', '46.6343', '01006000','Travessa Adelia', 6, 'Apto 6', 6),
-(8, '23.5515', '46.6343', '01008000','Rua Ernimeu', 8, 'Apto 8', 6),
+(1, '-23.551678073251345', '-46.65110050078054', '01305000','Rua Augusta', 539, 'Apto 2', 2),
+(2, '-23.54792820606573', '-46.653211638769676', '01241001','Rua Piauí', 163, 'Apto 1', 1),
+(3, '-23.554646777662235', '-46.651825482796056', '01308010','Rua Dr. Penaforte Mendes', 157, 'Apto 7', 1),
+(4, '-23.556689244047583', '-46.6474597035435', '01003000','Rua Dr. Luís Barreto', 252, '', 3),
+(5, '-23.557457363825513', '-46.644853331720974', '01328000',' Rua Conselheiro Carrão', 268, '', 4),
+(6, '-23.54695743989084', '-46.653992631943865', '02327135','Rua Piauí', 295, 'Apto 5', 5),
+(7, '-23.55159283805445', '-46.64869948726493', '01307000','Rua Frei Caneca', 92, 'Apto 6', 6),
+(8, '-23.54868323670033', '-46.64764164655138', '01303040','Rua Gravataí', 30, 'Apto 8', 6),
 (9, '-23.564652598297457', '-46.65071290330969', '01310100','Avenida Paulista', 900, '', 100),
 (10, '-23.598948303991115', '-46.63624325422176', '04035001','Rua Domingos de Morais', 2565, 'Shopping Santa Cruz', 100);
 
@@ -413,17 +414,17 @@ INSERT INTO `escola` (`nome`, `endereco_id`) VALUES
 
 -- Inserindo registros na tabela `dependente`
 INSERT INTO `dependente` (`nome`, `data_nascimento`, `serie`, `escola_id`, `responsavel_id`, `motorista_id`, `imagem_id`) VALUES
-('Dependente 1', '2010-01-01', '1ª série', 1, 1, 2, 1),
-('Dependente 2', '2010-02-02', '1ª série', 1, 1, 2, 1),
-('Dependente 3', '2010-03-03', '1ª série', 1, 3, 2, 1),
-('Dependente 4', '2010-04-04', '1ª série', 1, 4, 2, 1),
-('Dependente 5', '2010-05-05', '1ª série', 1, 4, 2, 1),
-('Dependente 6', '2010-06-06', '2ª série', 1, 5, 2, 1),
-('Dependente 7', '2010-07-07', '2ª série', 2, 5, 2, 1),
-('Dependente 8', '2010-08-08', '2ª série', 2, 6, 2, 1),
-('Dependente 9', '2010-09-09', '2ª série', 2, 6, 2, 1),
-('Dependente 10', '2010-10-10', '2ª série', 2, 6, 2, 1),
-("Dependente 11", "2010-01-30", "9° Ano Fundamental", 1, 1, NULL, 1);
+('Vinicius', '2010-01-01', '1ª série', 1, 1, 2, 1),
+('Eduardo', '2010-02-02', '1ª série', 1, 1, 2, 1),
+('Larrisa', '2010-03-03', '1ª série', 1, 3, 2, 1),
+('Gustavo', '2010-04-04', '1ª série', 1, 4, 2, 1),
+('Kauan', '2010-05-05', '1ª série', 1, 4, 2, 1),
+('Bruna', '2010-06-06', '2ª série', 1, 5, 2, 1),
+('Isabeli', '2010-07-07', '2ª série', 2, 5, 2, 1),
+('Marcio', '2010-08-08', '2ª série', 2, 6, 2, 1),
+('Cláudio', '2010-09-09', '2ª série', 2, 6, 2, 1),
+('Maisa', '2010-10-10', '2ª série', 2, 6, 2, 1),
+("Maria", "2010-01-30", "9° Ano Fundamental", 1, 1, NULL, 1);
 
 -- Inserindo registros na tabela `transporte`
 INSERT INTO `transporte` (`placa`, `cnpj`, `cnh`, `crm`, `crmc`, `usuario_id`) VALUES
@@ -462,21 +463,21 @@ INSERT INTO `rota` (`trajeto_id`, `dependente_id`, `endereco_id`, `status`) VALU
 (1, 4, 4, 0),
 (1, 5, 4, 0),
 (1, 6, 5, 0),
-(1, 7, 5, 0),
-(1, 8, 6, 0),
-(1, 9, 6, 0),
-(1, 10, 8, 0),
+-- (1, 7, 5, 0),
+-- (1, 8, 6, 0),
+-- (1, 9, 6, 0),
+-- (1, 10, 8, 0),
 -- Rota para o trajeto VOLTA, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (2, 1, 1, 0),
 (2, 2, 7, 0),
 (2, 3, 3, 0),
 (2, 4, 4, 0),
 (2, 5, 4, 0),
-(2, 6, 5, 0),
-(2, 7, 5, 0),
-(2, 8, 6, 0),
-(2, 9, 6, 0),
-(2, 10, 8, 0);
+(2, 6, 5, 0);
+-- (2, 7, 5, 0),
+-- (2, 8, 6, 0),
+-- (2, 9, 6, 0),
+-- (2, 10, 8, 0);
 
 -- Inserindo registros na tabela `conversa`
 INSERT INTO `conversa` (`responsavel_id`, `motorista_id`) VALUES
