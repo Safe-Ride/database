@@ -333,6 +333,16 @@ CREATE TABLE `historico` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `tempo_real` (
+	`id_motorista` INT,
+	`latitude` VARCHAR(200),
+	`longitude` VARCHAR(200),
+	`Data` DATETIME,
+	CONSTRAINT `fk_id_motorista` (`id_motorista` ASC) VISIBLE,
+		FOREIGN KEY (`id_motorista`)
+		REFERENCES `usuario` (`id`)
+)
+
 -- -----------------------------------------------------
 -- View `Pagamento Status`
 -- -----------------------------------------------------
