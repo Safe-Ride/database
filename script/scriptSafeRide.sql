@@ -390,6 +390,7 @@ INSERT INTO `usuario` (`id`,`nome`, `email`, `senha`, `cpf`, `telefone`, `data_n
 (4, 'Alessandra', 'alessandra@email.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678902', '11923456789', '1981-02-02', 1, 5),
 (5, 'Patrícia', 'patricia@email.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678902', '11923456789', '1981-02-02', 1, 6),
 (6, 'Paulo', 'paulo@email.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678902', '11923456789', '1981-02-02', 1, 7),
+(7, 'Teles', 'teles@email.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678302', '11923456789', '1981-02-02', 1, NULL),
 (100, 'AdminMotorista', 'safe20.ride24@gmail.com', 'admin@admin', '12345678950','11952034428', '2005-03-25', 0, 1),
 (101, 'AdminResponsavel', 'safe20.ride24@gmail.com', 'admin@admin', '12345678950','11952034428', '2005-03-25', 1, 1);
 
@@ -405,7 +406,8 @@ INSERT INTO `endereco` (`id`,`latitude`, `longitude`, `cep`,`nome`, `numero`, `c
 (7, '-23.55159283805445', '-46.64869948726493', '01307000','Rua Frei Caneca', 92, 'Apto 6', 6),
 (8, '-23.54868323670033', '-46.64764164655138', '01303040','Rua Gravataí', 30, 'Apto 8', 6),
 (9, '-23.564652598297457', '-46.65071290330969', '01310100','Avenida Paulista', 900, '', 100),
-(10, '-23.598948303991115', '-46.63624325422176', '04035001','Rua Domingos de Morais', 2565, 'Shopping Santa Cruz', 100);
+(10, '-23.598948303991115', '-46.63624325422176', '04035001','Rua Domingos de Morais', 2565, 'Shopping Santa Cruz', 100),
+(11, '-23.55291113668011', '-46.656906360441674', '01415000','Rue Bela Cintra', 450, ' ', 7);
 
 -- Inserindo registros na tabela `escola`
 INSERT INTO `escola` (`nome`, `endereco_id`) VALUES
@@ -428,7 +430,7 @@ INSERT INTO `dependente` (`nome`, `data_nascimento`, `serie`, `escola_id`, `resp
 
 -- Inserindo registros na tabela `transporte`
 INSERT INTO `transporte` (`placa`, `cnpj`, `cnh`, `crm`, `crmc`, `usuario_id`) VALUES
-('ABC1234', '12345678000100', '123456789', '1234567', '12345678901234', 1);
+('ABC1234', '12345678000100', '123456789', '1234567', '12345678901234', 2);
 
 -- Inserindo registros na tabela `transporteEscola`
 INSERT INTO `transporte_escola` VALUES
