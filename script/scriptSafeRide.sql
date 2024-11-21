@@ -428,7 +428,7 @@ INSERT INTO `dependente` (`nome`, `data_nascimento`, `serie`, `escola_id`, `resp
 
 -- Inserindo registros na tabela `transporte`
 INSERT INTO `transporte` (`placa`, `cnpj`, `cnh`, `crm`, `crmc`, `usuario_id`) VALUES
-('ABC1234', '12345678000100', '123456789', '1234567', '12345678901234', 1);
+('ABC1234', '12345678000100', '123456789', '1234567', '12345678901234', 2);
 
 -- Inserindo registros na tabela `transporteEscola`
 INSERT INTO `transporte_escola` VALUES
@@ -591,9 +591,9 @@ JOIN trajeto tr ON hi.trajeto_id = tr.id
 JOIN mensagem me ON me.trajeto_id = tr.id
 JOIN rota ro ON ro.trajeto_id = tr.id
 JOIN dependente de ON ro.dependente_id = de.id
-JOIN usuario us ON de.responsavel_id = us.id
-GROUP BY 
-      de_id;
+JOIN usuario us ON de.responsavel_id = us.id;
+-- GROUP BY 
+--      de_id;
           
           -- view dos pagamentos e contratos do motorista --
           create view detalhe_pagamento_do_motorista as
