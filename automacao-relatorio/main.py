@@ -1,14 +1,13 @@
 from os import environ
 from selenium import webdriver
 from selenium.common import TimeoutException, ElementNotInteractableException
+from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -28,43 +27,69 @@ print(f"Autor: {commit_author}\n Email: {commit_author_email}\n Message: {commit
 
 driver.get('https://moodle.sptech.school/mod/quiz/view.php?id=30413')
 
-def carregou_elemento_interativo(xpath:str):
+def exceptions(func):
     try:
-        element = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.XPATH, xpath)))
-        return element
+        return func()
     except TimeoutException:
         print("Timed out waiting for page to load")
     except ElementNotInteractableException:
         print("Element not interactable")
     except Exception as e:
-        print(e)
+        raise Exception(e)
 
+def carregou_elemento_interativo(xpath:str):
+    return exceptions(
+        lambda: WebDriverWait(driver,30).until(
+            EC.element_to_be_clickable((By.XPATH, xpath))
+        )
+    )
 
 def carregou_elemento_interativo_css(selector:str):
-    try:
-        element = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.CSS_SELECTOR, selector)))
-        return element
-    except TimeoutException:
-        print("Timed out waiting for page to load")
-    except ElementNotInteractableException:
-        print("Element not interactable")
-    except Exception as e:
-        print(e)
+    return exceptions(
+        lambda: WebDriverWait(driver, 30).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, selector))
+        )
+    )
 
-try:
-    email = WebDriverWait(driver, 30).until(EC.visibility_of_element_located((By.CSS_SELECTOR,'#username')))
-    email.clear()
-    email.send_keys(commit_author_email)
+def carregou_elemento_com_texto(selector:str, text:str, time=3) -> webdriver:
+    return exceptions(
+        lambda: WebDriverWait(driver, time).until(
+            EC.text_to_be_present_in_element((By.CSS_SELECTOR, selector), text)
+        )
+    )
+
+def enviar_credenciais(email_autor:str, senha_autor:str):
+    input_email = carregou_elemento_interativo_css('#username')
+    input_email.clear()
+    input_email.send_keys(email_autor)
     print('Email inserido')
 
-    senha = (WebDriverWait(driver, 30)).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#password')))
-    senha.clear()
-    senha.send_keys(commit_author_password)
+    input_senha = carregou_elemento_interativo_css('#password')
+    input_senha.clear()
+    input_senha.send_keys(senha_autor)
     print('senha inserida')
 
-    botao = WebDriverWait(driver, 30).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'#loginbtn')))
+    botao = carregou_elemento_interativo_css('#loginbtn')
     botao.click()
-    print('login concluido')
+
+
+def login(email_autor:str, senha_autor:str) -> bool:
+    for _ in range(1):
+        enviar_credenciais(email_autor, senha_autor)
+
+        login_realizado = carregou_elemento_com_texto(
+            '#region-main > div:nth-child(2) > h3',
+            'Resumo das suas tentativas anteriores')
+
+        if login_realizado:
+            return True
+    return False
+
+try:
+    if login(commit_author_email, commit_author_password):
+        print('login concluido com sucesso')
+    else:
+        raise Exception("Falha ao realizar o login")
 
     inicio_relatorio = carregou_elemento_interativo_css('#region-main > div:nth-child(2) > div.box.py-3.quizattempt > div')
     inicio_relatorio.click()
