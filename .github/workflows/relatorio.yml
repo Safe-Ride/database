@@ -6,16 +6,10 @@ on:
     branches-ignore: 
       - master
 
-<<<<<<< Updated upstream
-    pull_request:
-      branches-ignore:
-        - *
-=======
   pull_request:
     branches-ignore:
       - master
 
->>>>>>> Stashed changes
   workflow_dispatch: 
 
 jobs:
