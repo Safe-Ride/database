@@ -2,8 +2,8 @@ name: Run Selenium Automation
 
 on:
   push:
-    # branches:
-    #   - SR-105  # Ou outra branch desejada
+    branches-ignore:  # Ignora a execução para a branch master
+      - master
   workflow_dispatch:  # Permite rodar manualmente pelo GitHub Actions
 
 jobs:
