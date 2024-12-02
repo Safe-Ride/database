@@ -8,17 +8,13 @@ DROP DATABASE IF EXISTS saferide;
 CREATE DATABASE saferide;
 use saferide;
 
--- -----------------------------------------------------
--- Table `Imagem`
--- -----------------------------------------------------
+
 CREATE TABLE `imagem` (
 	`id` INT AUTO_INCREMENT,
 	`caminho` VARCHAR(200) NULL,
 	PRIMARY KEY (`id`)
 );
--- -----------------------------------------------------
--- Table `usuario`
--- -----------------------------------------------------
+
 CREATE TABLE `usuario` (
 	`id` INT AUTO_INCREMENT,
 	`nome` VARCHAR(200) NULL,
@@ -36,9 +32,7 @@ CREATE TABLE `usuario` (
 		REFERENCES `imagem` (`id`)
 );
 
--- -----------------------------------------------------
--- Table `endereco`
--- -----------------------------------------------------
+
 CREATE TABLE `endereco` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`latitude` VARCHAR(45) NULL DEFAULT NULL,
@@ -55,9 +49,7 @@ CREATE TABLE `endereco` (
 		REFERENCES `usuario` (`id`)
 );
 
--- -----------------------------------------------------
--- Table `escola`
--- -----------------------------------------------------
+
 CREATE TABLE `escola` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`nome` VARCHAR(300) NULL DEFAULT NULL,
@@ -69,9 +61,7 @@ CREATE TABLE `escola` (
 		REFERENCES `endereco` (`id`)
 );
 	
--- -----------------------------------------------------
--- Table `contrato`
--- -----------------------------------------------------
+
 CREATE TABLE `contrato` (
 	`id` INT AUTO_INCREMENT,
 	`motorista_id` INT NOT NULL,
@@ -90,9 +80,7 @@ CREATE TABLE `contrato` (
 	PRIMARY KEY (`id`)
 );
 
--- -----------------------------------------------------
--- Table `dependente`
--- -----------------------------------------------------
+
 CREATE TABLE `dependente` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`nome` VARCHAR(200) NULL,
@@ -126,9 +114,7 @@ CREATE TABLE `dependente` (
 		REFERENCES `contrato` (`id`)
 );
     
--- -----------------------------------------------------
--- Table `transporte`
--- -----------------------------------------------------
+
 CREATE TABLE `transporte` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`placa` VARCHAR(45) NULL DEFAULT NULL,
@@ -144,9 +130,7 @@ CREATE TABLE `transporte` (
 		REFERENCES `usuario` (`id`)
 );
 
--- -----------------------------------------------------
--- Table `trajeto`
--- -----------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `trajeto` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`tipo` INT NOT NULL,
@@ -166,9 +150,6 @@ CREATE TABLE IF NOT EXISTS `trajeto` (
 		REFERENCES `usuario` (`id`)
 );
 
--- -----------------------------------------------------
--- Table `rota`
--- -----------------------------------------------------
 CREATE TABLE `rota` (
 	`id` INT AUTO_INCREMENT,
 	`trajeto_id` INT NOT NULL,
@@ -191,9 +172,7 @@ CREATE TABLE `rota` (
 		REFERENCES `endereco` (`id`)
 );
 
--- -----------------------------------------------------
--- Table `conversa`
--- -----------------------------------------------------
+
 CREATE TABLE `conversa` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`responsavel_id` INT NOT NULL,
@@ -209,9 +188,7 @@ CREATE TABLE `conversa` (
 		REFERENCES `usuario` (`id`)
 );
 
--- -----------------------------------------------------
--- Table `mensagem`
--- -----------------------------------------------------
+
 CREATE TABLE `mensagem` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`data` DATETIME NULL,
@@ -240,9 +217,7 @@ CREATE TABLE `mensagem` (
 		REFERENCES `dependente` (`id`)
 );
 
--- -----------------------------------------------------
--- Table `transporte_escola`
--- -----------------------------------------------------
+
 CREATE TABLE `transporte_escola` (
   `transporte_id` INT NOT NULL,
   `escola_id` INT NOT NULL,
@@ -257,9 +232,6 @@ CREATE TABLE `transporte_escola` (
     REFERENCES `escola` (`id`)
 );
 
--- -----------------------------------------------------
--- Table `Pagamento`
--- -----------------------------------------------------
 CREATE TABLE `pagamento` (
 	`id` INT AUTO_INCREMENT,
 	`contrato_id` INT NOT NULL,
@@ -276,9 +248,6 @@ CREATE TABLE `pagamento` (
 	PRIMARY KEY (`id`)
 );
 
--- -----------------------------------------------------
--- Table `Pagamento`
--- -----------------------------------------------------
 CREATE TABLE `solicitacao` (
 	`id` INT AUTO_INCREMENT,
 	`responsavel_id` INT NOT NULL,
@@ -318,9 +287,6 @@ CREATE TABLE `solicitacao` (
 	PRIMARY KEY (`id`)
 );
 
------------------------------------------------------
--- Table `Historico`
------------------------------------------------------
 CREATE TABLE `historico` (
 	`id` INT AUTO_INCREMENT,
     `trajeto_id` INT NOT NULL,
@@ -333,9 +299,6 @@ CREATE TABLE `historico` (
 	PRIMARY KEY (`id`)
 );
 
--- -----------------------------------------------------
--- View `Pagamento Status`
--- -----------------------------------------------------
 CREATE VIEW v_pagamento_status AS
 SELECT 
     COUNT(CASE WHEN p.status = 0 THEN 1 END) AS pago,
@@ -344,9 +307,6 @@ SELECT
 FROM 
     pagamento AS p;
     
--- -----------------------------------------------------
--- View `Renda Bruta Por Mes`
--- -----------------------------------------------------
 CREATE VIEW v_renda_bruta_mes AS
 SELECT
     DATE_FORMAT(data_vencimento, '%Y-%m-%d') AS data,
@@ -358,9 +318,6 @@ GROUP BY
 ORDER BY
     STR_TO_DATE(data, '%Y-%m');
     
--- -----------------------------------------------------
--- View `Pagamentos Totais E Efetuados`
--- -----------------------------------------------------
 CREATE VIEW v_pagamentos_total_efetuados AS
 SELECT
     DATE_FORMAT(data_vencimento, '%Y-%m-%d') AS data,
@@ -372,7 +329,6 @@ GROUP BY
     data 
 LIMIT 4;
 
--- Inserindo registros na tabela `imagem`
 INSERT INTO `imagem` (`id`, `caminho`) VALUES
 (1, 'profile.png'),
 (2, 'perfil-1.png'),
@@ -382,7 +338,6 @@ INSERT INTO `imagem` (`id`, `caminho`) VALUES
 (6, 'perfil-5.png'),
 (7, 'perfil-6.png');
 
--- Inserindo registros na tabela `usuario`
 INSERT INTO `usuario` (`id`,`nome`, `email`, `senha`, `cpf`, `telefone`, `data_nascimento`, `tipo`, `imagem_id`) VALUES
 (1, 'Carlos', 'carlos@email.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678902', '11923456789', '1981-02-02', 1, 2),
 (2, 'Rogerio', 'rogerio@email.com', '$2a$10$v7v/un8EipcWCr18p.ZNQOXrWxvyOcgTrrx8emLhbtDQj5uZH75nu', '12345678911', '11923456789', '1999-03-04', 0, 3),
@@ -394,7 +349,6 @@ INSERT INTO `usuario` (`id`,`nome`, `email`, `senha`, `cpf`, `telefone`, `data_n
 (101, 'AdminResponsavel', 'safe20.ride24@gmail.com', 'admin@admin', '12345678950','11952034428', '2005-03-25', 1, 1);
 
 
--- Inserindo registros na tabela `endereco`
 INSERT INTO `endereco` (`id`,`latitude`, `longitude`, `cep`,`nome`, `numero`, `complemento`, `usuario_id`) VALUES
 (1, '-23.551678073251345', '-46.65110050078054', '01305000','Rua Augusta', 539, 'Apto 2', 2),
 (2, '-23.54792820606573', '-46.653211638769676', '01241001','Rua Piauí', 163, 'Apto 1', 1),
@@ -407,12 +361,10 @@ INSERT INTO `endereco` (`id`,`latitude`, `longitude`, `cep`,`nome`, `numero`, `c
 (9, '-23.564652598297457', '-46.65071290330969', '01310100','Avenida Paulista', 900, '', 100),
 (10, '-23.598948303991115', '-46.63624325422176', '04035001','Rua Domingos de Morais', 2565, 'Shopping Santa Cruz', 100);
 
--- Inserindo registros na tabela `escola`
 INSERT INTO `escola` (`nome`, `endereco_id`) VALUES
 ('Objetivo Paulista', 9),
 ('Colégio Marista', 10);
 
--- Inserindo registros na tabela `dependente`
 INSERT INTO `dependente` (`nome`, `data_nascimento`, `serie`, `escola_id`, `responsavel_id`, `motorista_id`, `imagem_id`) VALUES
 ('Vinicius', '2010-01-01', '1ª série', 1, 1, 2, 1),
 ('Eduardo', '2010-02-02', '1ª série', 1, 1, 2, 1),
@@ -426,60 +378,37 @@ INSERT INTO `dependente` (`nome`, `data_nascimento`, `serie`, `escola_id`, `resp
 ('Maisa', '2010-10-10', '2ª série', 2, 6, 2, 1),
 ("Maria", "2010-01-30", "9° Ano Fundamental", 1, 1, NULL, 1);
 
--- Inserindo registros na tabela `transporte`
 INSERT INTO `transporte` (`placa`, `cnpj`, `cnh`, `crm`, `crmc`, `usuario_id`) VALUES
 ('ABC1234', '12345678000100', '123456789', '1234567', '12345678901234', 1);
 
--- Inserindo registros na tabela `transporteEscola`
 INSERT INTO `transporte_escola` VALUES
 (1, 1),
 (1, 2);
 
--- Inserindo registros na tabela `trajeto`
 INSERT INTO `trajeto` (`tipo`, `horario`, `dia_semana`, `escola_id`, `motorista_id`, `ativo`) VALUES
--- IDA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (0, 0, 0, 1, 2, false),
--- VOLTA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (1, 0, 0, 1, 2, false),
--- IDA, TARDE, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (0, 1, 0, 1, 2, false),
--- VOLTA, TARDE, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (1, 1, 0, 1, 2, false),
--- IDA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (0, 0, 0, 2, 2, false),
--- VOLTA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (1, 0, 0, 2, 2, false),
--- IDA, TARDE, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (0, 1, 0, 2, 2, false),
--- VOLTA, TARDE, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (1, 1, 0, 2, 2, false);
 
--- Inserindo registros na tabela `rota`
 INSERT INTO `rota` (`trajeto_id`, `dependente_id`, `endereco_id`, `status`) VALUES
--- Rota para o trajeto IDA, MANHA, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (1, 1, 1, 0),
 (1, 2, 7, 0),
 (1, 3, 3, 0),
 (1, 4, 4, 0),
 (1, 5, 4, 0),
 (1, 6, 5, 0),
--- (1, 7, 5, 0),
--- (1, 8, 6, 0),
--- (1, 9, 6, 0),
--- (1, 10, 8, 0),
--- Rota para o trajeto VOLTA, SEGUNDA, ESCOLA 1, MOTORISTA 1
 (2, 1, 1, 0),
 (2, 2, 7, 0),
 (2, 3, 3, 0),
 (2, 4, 4, 0),
 (2, 5, 4, 0),
 (2, 6, 5, 0);
--- (2, 7, 5, 0),
--- (2, 8, 6, 0),
--- (2, 9, 6, 0),
--- (2, 10, 8, 0);
 
--- Inserindo registros na tabela `conversa`
 INSERT INTO `conversa` (`responsavel_id`, `motorista_id`) VALUES
 (1, 2),
 (3, 2),
@@ -487,7 +416,6 @@ INSERT INTO `conversa` (`responsavel_id`, `motorista_id`) VALUES
 (5, 2),
 (6, 2);
 
--- Inserindo registros na tabela `contrato`
 INSERT INTO `contrato` (`motorista_id`, `responsavel_id`, `data_inicio`, `data_fim`, `valor`) VALUES
 (2, 1, '2024-07-15', '2025-07-15', 400.00),
 (2, 3, '2024-05-01', '2025-05-01', 200.00),
@@ -495,9 +423,7 @@ INSERT INTO `contrato` (`motorista_id`, `responsavel_id`, `data_inicio`, `data_f
 (2, 5, '2024-01-03', '2025-01-03', 400.00),
 (2, 6, '2024-01-19', '2025-01-19', 600.00);
 
--- Inserindo registros na tabela `pagamento`
 INSERT INTO `pagamento` (`contrato_id`, `data_vencimento`, `data_efetuacao`, `valor`, `tipo`, `status`) VALUES
--- Tipo: 0= pix; 1= boleto
 (1, '2024-07-10', '2024-07-01', 400.00, 0, 0),
 (1, '2024-08-10', '2024-08-10', 400.00, 0, 0),
 (1, '2024-09-10', '2024-09-25', 400.00, 0, 1),
@@ -549,16 +475,13 @@ INSERT INTO `pagamento` (`contrato_id`, `data_vencimento`, `data_efetuacao`, `va
 (5, '2024-11-19', NULL, 500.00, 1, 1),
 (5, '2024-12-19', NULL, 500.00, 1, 1);
 
--- Inserindo registros na tabela `mensagem`
 INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`) VALUES
--- Mensagem default
 (now(), 6, 1, 2, 1),
 (now(), 6, 2, 2, 2),
 (now(), 6, 3, 2, 3),
 (now(), 6, 4, 2, 4),
 (now(), 6, 5, 2, 5);	
 
--- Inserindo registros na tabela `mensagem`
 INSERT INTO `mensagem` (`data`, `status`, `conversa_id`, `usuario_id`, `dependente_id`, `trajeto_id`) VALUES
 ('2024-10-10 12:24', 3, 1, 2, 1, 1),
 ('2024-10-10 13:00', 4, 1, 2, 1, 1),
@@ -570,7 +493,6 @@ insert into `historico` (`trajeto_id`, `horario_inicio`, `horario_fim`) VALUES
 (2, '2024-10-10 12:33', '2024-10-10 13:42');
 
 
--- View Status do dependente a partir do resposanvel--
 CREATE VIEW v_listar_status_dependente_por_responsavel AS 
 SELECT 
        hi.id as historico_id,
@@ -595,7 +517,6 @@ JOIN usuario us ON de.responsavel_id = us.id
 GROUP BY 
       de_id;
           
-          -- view dos pagamentos e contratos do motorista --
           create view detalhe_pagamento_do_motorista as
           SELECT 
     u_responsavel.nome AS responsavel_nome,
