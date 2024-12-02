@@ -38,7 +38,7 @@ jobs:
             "brunolimabh") echo "commit_author_password=${{ secrets.PASSWORD_brunolimabh }}" >> $GITHUB_ENV ;;
             "daniloBritoo") echo "commit_author_password=${{ secrets.PASSWORD_daniloBritoo }}" >> $GITHUB_ENV ;;
             "felipeguerrino-sptech") echo "commit_author_password=${{ secrets.PASSWORD_felipeguerrino }}" >> $GITHUB_ENV ;;
-            "Hideki19") echo "commit_author_password=${{ secrets.PASSWORD_Hideki19 }}" >> $GITHUB_ENV ;;
+            "Hideki Nakamura") echo "commit_author_password=${{ secrets.PASSWORD_HIDEKI19 }}" >> $GITHUB_ENV ;;
             "Lucas1Ferreira") echo "commit_author_password=${{ secrets.PASSWORD_Lucas1Ferreira }}" >> $GITHUB_ENV ;;
             *) echo "commit_author_password=" >> $GITHUB_ENV ;; # Senha vazia caso o autor não seja reconhecido
           esac
