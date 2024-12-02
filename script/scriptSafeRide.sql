@@ -299,6 +299,19 @@ CREATE TABLE `historico` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `tempo_real` (
+    `id_motorista` INT NOT NULL,
+    `latitude` VARCHAR(200) NOT NULL,
+    `longitude` VARCHAR(200) NOT NULL,
+    `data` DATETIME NOT NULL,
+    CONSTRAINT `fk_id_motorista` FOREIGN KEY (`id_motorista`)
+    REFERENCES `usuario` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+-- -----------------------------------------------------
+-- View `Pagamento Status`
+-- -----------------------------------------------------
 CREATE VIEW v_pagamento_status AS
 SELECT 
     COUNT(CASE WHEN p.status = 0 THEN 1 END) AS pago,
@@ -540,5 +553,3 @@ JOIN
 JOIN 
     usuario u_responsavel ON c.responsavel_id = u_responsavel.id AND u_responsavel.tipo = 1;
 			
-
-
