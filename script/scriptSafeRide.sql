@@ -1,4 +1,4 @@
-CREATE USER IF NOT EXISTS 'safeuser'@'localhost' IDENTIFIED BY 'eunaosei';
+CREATE USER IF NOT EXISTS 'safeuser'@'localhost' IDENTIFIED BY 'urubu100';
 GRANT ALL PRIVILEGES ON saferide.* TO 'safeuser'@'localhost';
 FLUSH PRIVILEGES;
 
