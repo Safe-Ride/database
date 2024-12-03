@@ -603,9 +603,9 @@ JOIN trajeto tr ON hi.trajeto_id = tr.id
 JOIN mensagem me ON me.trajeto_id = tr.id
 JOIN rota ro ON ro.trajeto_id = tr.id
 JOIN dependente de ON ro.dependente_id = de.id
-JOIN usuario us ON de.responsavel_id = us.id
-GROUP BY 
-      de_id;
+JOIN usuario us ON de.responsavel_id = us.id;
+-- GROUP BY 
+--      de_id;
           
           -- view dos pagamentos e contratos do motorista --
           create view detalhe_pagamento_do_motorista as
